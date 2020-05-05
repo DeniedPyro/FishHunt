@@ -14,12 +14,20 @@ public class HighScoreManager {
 
 
 
-    public ArrayList<PlayerScore> getScores(){
-        return this.scores;
+    public ArrayList<String> getScores(){
+        if (scores == null){
+            this.scores = readHighScores();
+        }
+         ArrayList<String> fScores = new ArrayList<String>();
+
+        for (PlayerScore playerScore : this.scores) {
+            fScores.add(playerScore.playerName+"-"+playerScore.score);
+        }
+        return  fScores;
     }
 
     public  void addScore(PlayerScore playerscore){
-        this.readHighScores();
+        this.scores = this.readHighScores();
 
         int i = 0;
         while (i < this.scores.size() && playerscore.score < scores.get(i).score){
@@ -37,7 +45,6 @@ public class HighScoreManager {
     private void writeHighScores() {
 
         try {
-
             FileOutputStream fileOut = new FileOutputStream(this.filepath);
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
             objectOut.writeObject(this.scores);
@@ -49,7 +56,7 @@ public class HighScoreManager {
         }
     }
 
-    private void readHighScores() {
+    private ArrayList <PlayerScore> readHighScores() {
 
         try {
 
@@ -61,16 +68,16 @@ public class HighScoreManager {
             objectIn.close();
 
             if (obj == null){
-                this.scores = new ArrayList<PlayerScore>();
+               return new ArrayList<PlayerScore>();
             }
 
             else {
-                this.scores = (ArrayList<PlayerScore>) obj;
+                return (ArrayList<PlayerScore>) obj;
             }
 
         } catch (Exception ex) {
             // if file is completly empty
-            this.scores = new ArrayList<PlayerScore>();
+            return new ArrayList<PlayerScore>();
 
         }
     }
