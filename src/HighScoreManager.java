@@ -4,21 +4,37 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-import static java.lang.StrictMath.E;
-
 public class HighScoreManager {
     private String filepath;
-    private ArrayList<Score> scores;
+    private ArrayList<PlayerScore> scores;
 
     public HighScoreManager(){
         this.filepath = "src/HighScores.txt";
     }
 
-    public  void addScore(Score score){
-        scores.add(score);
+
+
+    public ArrayList<PlayerScore> getScores(){
+        return this.scores;
     }
 
-    public void writeHighScores() {
+    public  void addScore(PlayerScore playerscore){
+        this.readHighScores();
+
+        int i = 0;
+        while (i < this.scores.size() && playerscore.score < scores.get(i).score){
+            i++;
+        }
+        scores.add(i,playerscore);
+
+        if (scores.size() > 10){
+            scores.remove(10);
+        }
+        this.writeHighScores();
+
+    }
+
+    private void writeHighScores() {
 
         try {
 
@@ -26,14 +42,14 @@ public class HighScoreManager {
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
             objectOut.writeObject(this.scores);
             objectOut.close();
-            System.out.println("The Object  was succesfully written to a file");
+            //System.out.println("The Object  was succesfully written to a file");
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public Object readHighScores() {
+    private void readHighScores() {
 
         try {
 
@@ -41,14 +57,21 @@ public class HighScoreManager {
             ObjectInputStream objectIn = new ObjectInputStream(fileIn);
 
             Object obj = objectIn.readObject();
-            System.out.println(obj);
-            System.out.println("The Object has been read from the file");
+            //System.out.println("The Object has been read from the file");
             objectIn.close();
-            return obj;
+
+            if (obj == null){
+                this.scores = new ArrayList<PlayerScore>();
+            }
+
+            else {
+                this.scores = (ArrayList<PlayerScore>) obj;
+            }
 
         } catch (Exception ex) {
-            scores = new ArrayList<Score>();
-            return null;
+            // if file is completly empty
+            this.scores = new ArrayList<PlayerScore>();
+
         }
     }
 
