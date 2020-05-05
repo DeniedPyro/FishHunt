@@ -5,18 +5,18 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Game {
-    public static final int WIDTH = 350, HEIGHT = 480;
+    public static final int WIDTH = 640, HEIGHT = 480;
     private ArrayList<Bubble> bubbles = new ArrayList<Bubble>();
+    private ArrayList<Ammo> ammo = new ArrayList<Ammo>();
+    private ArrayList<Fish> fish = new ArrayList<Fish>();
     private Random R = new Random();
     private double bubbleTimeIntervalTrack = 0.0;
     private boolean lock = false;
-    private Target target;
     private int level;
     private int lives;
     private int score;
 
     public Game() {
-        this.target = new Target(WIDTH / 2 - 25, HEIGHT - 50);
     }
 
     public void incrementLives(){
@@ -55,7 +55,7 @@ public class Game {
      * @param b
      */
     private void addBubbleGroup(ArrayList<Bubble> b) {
-        Bubble[] balles = new Bubble[5];
+        Bubble[] bubble = new Bubble[5];
         int basex = generateNumBetween(0, WIDTH);
         for (int i = 0; i < 5; i++) {
             int v = generateNumBetween(350, 450);
@@ -87,7 +87,6 @@ public class Game {
                 b.update(dt);
             }
         }
-        target.update(dt);
     }
 
 
@@ -97,8 +96,6 @@ public class Game {
     public void draw(GraphicsContext context) {
         context.setFill(Color.DARKBLUE);
         context.fillRect(0, 0, WIDTH, HEIGHT);
-
-        target.draw(context);
 
         for (int i = 0; i < this.bubbles.size(); i++) {
             Bubble bubble = this.bubbles.get(i);

@@ -3,7 +3,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import java.awt.*;
 
-public class Target extends Entity{
+public class Ammo extends Entity{
     private Image[][] frames;
     private Image image;
     private double frameRate = 8; // 8 frames par sec
@@ -12,7 +12,7 @@ public class Target extends Entity{
     private boolean parterre;
     private boolean moved;
 
-    public Target(double x, double y) {
+    public Ammo(double x, double y) {
         this.x = x;
         this.y = y;
         this.largeur = 50;

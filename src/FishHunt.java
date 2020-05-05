@@ -22,7 +22,7 @@ public class FishHunt extends Application {
      * @author Fahirah Diarra 20034025
      * @author Hamdi Ghannem 20151932
      */
-    public static final int WIDTH = 350, HEIGHT = 480;
+    public static final int WIDTH = 640, HEIGHT = 480;
 
     /**
      * @param args
