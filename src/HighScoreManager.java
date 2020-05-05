@@ -19,9 +19,9 @@ public class HighScoreManager {
             this.scores = readHighScores();
         }
          ArrayList<String> fScores = new ArrayList<String>();
-
+        int index = 0;
         for (PlayerScore playerScore : this.scores) {
-            fScores.add(playerScore.playerName+"-"+playerScore.score);
+            fScores.add("#"+(++index)+"-"+playerScore.playerName+"-"+playerScore.score);
         }
         return  fScores;
     }
