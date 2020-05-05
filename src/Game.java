@@ -12,9 +12,9 @@ public class Game {
     private Random R = new Random();
     private double bubbleTimeIntervalTrack = 0.0;
     private boolean lock = false;
-    private int level;
-    private int lives;
-    private int score;
+    private int level = 1;
+    private int lives = 3;
+    private int score = 0;
 
     public Game() {
     }
