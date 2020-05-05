@@ -80,6 +80,22 @@ public class FishHunt extends Application {
             if (value.getCode() == KeyCode.ESCAPE) {
                 Platform.exit();
             }
+
+            if (value.getCode() == KeyCode.H) {
+                Controller.incrementLevel();
+            }
+
+            if (value.getCode() == KeyCode.J) {
+                Controller.incrementScore();
+            }
+
+            if (value.getCode() == KeyCode.K) {
+                Controller.incrementLives();
+            }
+
+            if (value.getCode() == KeyCode.L) {
+                Controller.die();
+            }
         });
         scene.setOnKeyReleased((value) -> {
 

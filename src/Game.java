@@ -4,38 +4,41 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Jeu {
-
+public class Game {
     public static final int WIDTH = 350, HEIGHT = 480;
     private ArrayList<Bubble> bubbles = new ArrayList<Bubble>();
     private Random R = new Random();
     private double bubbleTimeIntervalTrack = 0.0;
     private boolean lock = false;
-    public static boolean debug = false;
     private Target target;
-    private  int lives;
+    private int level;
+    private int lives;
+    private int score;
 
-    public Jeu() {
+    public Game() {
         this.target = new Target(WIDTH / 2 - 25, HEIGHT - 50);
     }
 
-    /**retourne la valeur du debug
-     * @return boolean
-     */
-    public boolean getDebug() {
-        return this.debug;
+    public void incrementLives(){
+        if(this.lives < 3){
+            this.lives += 1;
+        }
+    }
+
+    public void incrementLevel(){
+        this.level += 1;
+    }
+
+    public void incrementScore(){
+        this.score +=1;
+    }
+
+    public void die(){
+        this.lives = 0;
     }
 
     public int getLives(){
         return this.lives;
-    }
-
-
-    /**modifie la valeur du debug
-     * @param debug
-     */
-    public void setDebug(boolean debug) {
-        this.debug = debug;
     }
 
     /**Genere un nombre entre min et max

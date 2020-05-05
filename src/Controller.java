@@ -5,64 +5,56 @@ import javafx.scene.text.Text;
 
 public class Controller {
 
-    Jeu jeu;
+    Game game;
 
     public Controller() {
-        jeu = new Jeu();
+        game = new Game();
     }
 
-
-    /** Call la methode draw de jeu
+    /** Call la methode draw de game
      * @param context
      */
     void draw(GraphicsContext context) {
-        jeu.draw(context);
+        game.draw(context);
     }
 
-
-    /** call la methode update de jeu puis reset le jeu si la meduse est morte
+    /** call la methode update de game puis reset le game si la meduse est morte
      * @param deltaTime
      */
     void update(double deltaTime) {
-        jeu.update(deltaTime);
-        if(jeu.getLives() == 0){
+        game.update(deltaTime);
+        if(game.getLives() == 0){
             resetJeu();
         }
     }
 
-
-    /** call la methode stop du jeu
+    /** call la methode stop du game
      *
      */
     void stop() {
-        jeu.stop();
+        game.stop();
     }
 
-    /** permet de toggle le mode Debug
-     *
-     */
-    void toggleDebug() {
-        jeu.setDebug(!jeu.getDebug());
-    }
-
-
-
-
-    /** permet de reset le jeu
+    /** permet de reset le game
      *
      */
     void resetJeu(){
-        jeu.resetJeu();
+        game.resetJeu();
     }
 
-    /** call la methode getDebug du jeu
-     *
-     */
-
-    boolean getDebug() {
-        return jeu.getDebug();
+    void incrementLives(){
+        game.incrementLives();           
     }
 
-    /**Arrete le mouvement de la meduse
-     */
+    void incrementLevel(){
+        game.incrementLevel();
+    }
+
+    void incrementScore(){
+        game.incrementScore();
+    }
+
+    void die(){
+        game.die();
+    }
 }
