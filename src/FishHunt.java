@@ -46,32 +46,6 @@ public class FishHunt extends Application {
 
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
 
-        //Creation du texte du mode Debug
-        Text position = new Text("Position =  ");
-        position.setFill(Color.rgb(255, 255, 255));
-        position.setFont(Font.font(10));
-        Text v = new Text("v =  ");
-        v.setFill(Color.rgb(255, 255, 255));
-        v.setFont(Font.font(15));
-        Text a = new Text("a =  ");
-        a.setFont(Font.font(15));
-        a.setFill(Color.rgb(255, 255, 255));
-        position.setFont(Font.font(15));
-        Text ground = new Text("Touche le sol : ");
-        ground.setFont(Font.font(15));
-        ground.setFill(Color.rgb(255, 255, 255));
-        VBox vbox = new VBox(position, v, a, ground);
-        v.setX(166);
-        //creation du texte de la distance parcourue
-        Text distance = new Text("0 m");
-        distance.setFill(Color.rgb(255, 255, 255));
-        distance.setX((WIDTH / 2) - 30);
-        distance.setFont(Font.font(30));
-        distance.setY(40);
-        VBox vbox2 = new VBox(distance);
-        vbox2.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(canvas, distance, vbox, vbox2);
-
         GraphicsContext context = canvas.getGraphicsContext2D();
         //creation du controller
         Controller controller = new Controller();
@@ -82,19 +56,19 @@ public class FishHunt extends Application {
             }
 
             if (value.getCode() == KeyCode.H) {
-                Controller.incrementLevel();
+                controller.incrementLevel();
             }
 
             if (value.getCode() == KeyCode.J) {
-                Controller.incrementScore();
+                controller.incrementScore();
             }
 
             if (value.getCode() == KeyCode.K) {
-                Controller.incrementLives();
+                controller.incrementLives();
             }
 
             if (value.getCode() == KeyCode.L) {
-                Controller.die();
+                controller.die();
             }
         });
         scene.setOnKeyReleased((value) -> {
@@ -118,15 +92,6 @@ public class FishHunt extends Application {
                     deltaTime -= maxDt;
                 }
                 controller.update(deltaTime);
-                controller.updateDistance(distance);
-
-                //Debug trigger
-                if (controller.getDebug()) {
-                    ;
-                } else if (!controller.getDebug() && vbox.isVisible()) {
-                    vbox.setVisible(false);
-                }
-
                 controller.draw(context);
                 lastTime = now;
             }

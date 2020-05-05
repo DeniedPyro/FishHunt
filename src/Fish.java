@@ -8,26 +8,8 @@ class Fish extends Entity {
      */
     @Override
     public void draw(GraphicsContext context) {
-        double yAffiche = y - Jeu.windowY;
-
         context.setFill(color);
-        context.fillRect(x, yAffiche, largeur, hauteur);
+        context.fillRect(x, y, largeur, hauteur);
     }
 
-    /** Donne une effet a la meduse
-     * @param j
-     * @param m
-     */
-    public void giveEffect(Jeu j , Medusa m){
-        ;
-    }
-
-    
-    /**Enleve leffet a la meduse
-     * @param j
-     * @param m
-     */
-    public void cancelEffect(Jeu j , Medusa m){
-        ;
-    }
 }

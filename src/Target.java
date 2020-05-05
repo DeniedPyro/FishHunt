@@ -3,7 +3,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import java.awt.*;
 
-public class Target extends Exception{
+public class Target extends Entity{
     private Image[][] frames;
     private Image image;
     private double frameRate = 8; // 8 frames par sec
@@ -41,7 +41,7 @@ public class Target extends Exception{
      * @param other
      * @return boolean
      */
-    public boolean intersects(Object other) {
+    public boolean intersects(Entity other) {
         return !( // Un des carrés est à gauche de l’autre
                 x + largeur < other.x
                         || other.x + other.largeur < this.x
@@ -60,12 +60,6 @@ public class Target extends Exception{
     public void draw(GraphicsContext context) {
 
         context.drawImage(image, x, y, largeur, hauteur);
-
-        if (Jeu.debug){
-            context.setFill(Color.rgb(255,0,0,0.4));
-            context.fillRect(x, y, largeur, hauteur);
-        }
-
 
     }
 
