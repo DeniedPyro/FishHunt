@@ -55,7 +55,7 @@ public class Game {
      * @param b
      */
     private void addBubbleGroup(ArrayList<Bubble> b) {
-        Bubble[] bubble = new Bubble[5];
+        Bubble[] balle = new Bubble[5];
         int basex = generateNumBetween(0, WIDTH);
         for (int i = 0; i < 5; i++) {
             int v = generateNumBetween(350, 450);
@@ -73,18 +73,25 @@ public class Game {
         /**
          *Cree les bulles a chaque 3 secondes
          */
+
         this.bubbleTimeIntervalTrack += dt;
         if (this.bubbleTimeIntervalTrack > 3.0 && this.bubbles.isEmpty()) {
             for (int i = 0; i < 3; i++) {
                 addBubbleGroup(bubbles);
             }
-            this.bubbleTimeIntervalTrack -= 0;
+            this.bubbleTimeIntervalTrack = 0;
         }
 
         if (!this.bubbles.isEmpty()) {
             for (int i = 0; i < this.bubbles.size(); i++) {
                 Bubble b = this.bubbles.get(i);
                 b.update(dt);
+            }
+        }
+        if (!this.ammo.isEmpty()) {
+            for (int i = 0; i < this.ammo.size(); i++){
+                Ammo a = this.ammo.get(i);
+                a.update(dt);
             }
         }
     }
@@ -96,15 +103,18 @@ public class Game {
     public void draw(GraphicsContext context) {
         context.setFill(Color.DARKBLUE);
         context.fillRect(0, 0, WIDTH, HEIGHT);
-
         for (int i = 0; i < this.bubbles.size(); i++) {
             Bubble bubble = this.bubbles.get(i);
-            if (bubble.getY() >  HEIGHT) {
+            if (bubble.getY() > -HEIGHT) {
                 bubble.draw(context);
             } else {
                 context.clearRect(bubble.getX(), bubble.getY(), bubble.getW(), bubble.getH());
                 this.bubbles.remove(i); // Retire l'élément zéro
             }
+        }
+        for (int i = 0; i < this.ammo.size(); i++) {
+            Ammo ammo = this.ammo.get(i);
+            ammo.draw(context);
         }
     }
 
@@ -116,5 +126,10 @@ public class Game {
      */
     public void resetJeu() {
         System.out.println("resetting the game");
+    }
+
+    public void fire(double x, double y) {
+        Ammo fired = new Ammo(x, y);
+        this.ammo.add(fired);
     }
 }

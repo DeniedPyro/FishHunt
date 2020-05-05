@@ -37,6 +37,13 @@ public class FishHunt extends Application {
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(10);
     }
+
+    public static void iniGamePane(Pane pane,ImageView imageView){
+        pane.setBackground(new Background(new BackgroundFill(Color.DARKBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+        imageView.setFitHeight(50);
+        imageView.setFitWidth(50);
+        pane.getChildren().add(imageView);
+    }
     /**
      * @param args
      */
@@ -54,15 +61,15 @@ public class FishHunt extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Pane root = new Pane();
-        VBox bruh = new VBox();
+        Pane gamePane = new Pane();
+        VBox highScoreVBox = new VBox();
         VBox mainMenu = new VBox();
 
         Scene menu = new Scene(mainMenu, WIDTH, HEIGHT);
 
-        Scene highScore = new Scene(bruh, WIDTH, HEIGHT);
+        Scene highScore = new Scene(highScoreVBox, WIDTH, HEIGHT);
 
-        Scene game = new Scene(root, WIDTH, HEIGHT);
+        Scene game = new Scene(gamePane, WIDTH, HEIGHT);
 
 
         Button gameButton = new Button("Nouvelle Partie!");
@@ -77,11 +84,29 @@ public class FishHunt extends Application {
 
         iniMainMenu(mainMenu, gameButton, scoreButton);
 
+        Image target = new Image("/Image/cible.png");
+        ImageView targetView = new ImageView(target);
+
+
+
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
 
         GraphicsContext context = canvas.getGraphicsContext2D();
+
+        gamePane.getChildren().add(canvas);
+
+        iniGamePane(gamePane, targetView);
         //creation du controller
         Controller controller = new Controller();
+        game.setOnMouseMoved((event) -> {
+            double w = targetView.getBoundsInLocal().getWidth();
+            double h = targetView.getBoundsInLocal().getHeight();
+            double x = event.getX() - w / 2;
+            double y = event.getY() - h / 2;
+            targetView.setX(x);
+            targetView.setY(y);
+        });
+
         game.setOnKeyPressed((value) -> {
 
             if (value.getCode() == KeyCode.ESCAPE) {
@@ -106,7 +131,7 @@ public class FishHunt extends Application {
         });
         game.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getButton() == MouseButton.PRIMARY){
-                System.out.println("bruh");
+                controller.fire(mouseEvent.getX(),mouseEvent.getY());
             }
         });
         AnimationTimer timer = new AnimationTimer() {

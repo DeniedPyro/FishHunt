@@ -57,4 +57,6 @@ public class Controller {
     void die(){
         game.die();
     }
+
+    void fire(double x, double y) { game.fire(x, y); }
 }

@@ -22,21 +22,14 @@ public class Bubble extends Entity{
         super.update(dt);
     }
 
-    @Override
-    public void draw(GraphicsContext context) {
-        ;
-    }
-
-
     /** Permet dafficher la bulle
      * @param context
-     * @param windowY
      */
-    public void draw(GraphicsContext context, double windowY) {
-        double yAffiche = this.y - windowY;
+    @Override
+    public void draw(GraphicsContext context) {
         context.setFill(Color.rgb(0, 0, 255, 0.4));
-        context.fillOval(this.getX(),yAffiche,
-                this.getW(), this.getH());
+        context.fillOval(this.getX(),this.getY(),
+        this.getW(), this.getH());
     }
 
     /** Getter de X
@@ -46,7 +39,7 @@ public class Bubble extends Entity{
         return x;
     }
 
-
+    
     /** Getter de Y
      * @return double
      */
@@ -54,14 +47,14 @@ public class Bubble extends Entity{
         return y;
     }
 
-
+    
     /** Getter de width
      * @return double
      */
     public double getW() {
         return 2 * r;
     }
-
+    
     /** Getter de H
      * @return double
      */

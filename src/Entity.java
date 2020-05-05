@@ -22,6 +22,7 @@ public abstract class Entity {
         vy += dt * ay;
         x += dt * vx;
         y += dt * vy;
+        y = Math.min(y, Game.HEIGHT - hauteur);
     }
     public abstract void draw(GraphicsContext context);
 }
