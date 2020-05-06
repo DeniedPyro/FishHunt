@@ -23,7 +23,7 @@ public class Starfish extends Fish {
         // Physique du personnage
         super.update(dt);
         timeTracker += dt;
-        y = 50*Math.sin(2*Math.PI/timeTracker) + posY;
+        y = 100*Math.sin((2*Math.PI*2)*timeTracker)+ posY;
 
     }
     /** permet de dessiner le startfish
