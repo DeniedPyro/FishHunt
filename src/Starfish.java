@@ -3,13 +3,10 @@ import javafx.scene.paint.Color;
 
 public class Starfish extends Fish {
 
-    public Starfish(int largeur, int x, double y) {
-
-        this.x = x;
-        this.y = y;
-        this.largeur = largeur;
-        this.hauteur = 10;
-
+    public Starfish(double x, double y, double vx, double vy) {
+        super(x,y,vx,vy);
+        this.largeur = 100;
+        this.hauteur = 100;
         this.color = Color.LIGHTGREEN;
     }
 
@@ -17,8 +14,16 @@ public class Starfish extends Fish {
         this.color = Color.LIGHTGREEN ;
     }
 
-    
-    /** permet de dessiner la plateforme
+    /** Permet de mettre a jour la position,vitesse et acceleration de la crab
+     * @param dt
+     */
+    @Override
+    public void update(double dt) {
+        // Physique du personnage
+        super.update(dt);
+
+    }
+    /** permet de dessiner le startfish
      * @param context
      */
     @Override
