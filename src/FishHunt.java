@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -19,6 +20,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class FishHunt extends Application {
     /**
@@ -31,11 +33,19 @@ public class FishHunt extends Application {
         vBox.setBackground(new Background(new BackgroundFill(Color.DARKBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
         Image logo = new Image("/Image/logo.png");
         ImageView logoView = new ImageView(logo);
-        vBox.getChildren().add(logoView);
-        vBox.getChildren().add(gameButton);
-        vBox.getChildren().add(scoreButton);
+        logoView.setFitWidth(538 * 4/5);
+        logoView.setFitHeight(367 * 4/5);
+        vBox.getChildren().addAll(logoView,gameButton,scoreButton);
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(10);
+        vBox.setPadding(new Insets(40,50,50,50));
+    }
+    public static void iniHighScore(VBox vBox, Text titleHighScore, ListView<String> listScores, Button menuButton){
+        titleHighScore.setFont(Font.font("serif", 25));
+        vBox.getChildren().addAll(titleHighScore,listScores,menuButton);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setSpacing(10);
+        vBox.setPadding(new Insets(20,30,20,30));
     }
 
     public static void iniGamePane(Pane pane,ImageView imageView){
@@ -71,8 +81,10 @@ public class FishHunt extends Application {
 
         Scene game = new Scene(gamePane, WIDTH, HEIGHT);
 
+        //Initialisation de la scene MainMenu
 
         Button gameButton = new Button("Nouvelle Partie!");
+
         Button scoreButton = new Button("Meilleurs scores");
 
         gameButton.setOnMouseClicked(mouseEvent -> {
@@ -84,10 +96,11 @@ public class FishHunt extends Application {
 
         iniMainMenu(mainMenu, gameButton, scoreButton);
 
+        //Initialisation de la scene Game
+
         Image target = new Image("/Image/cible.png");
+
         ImageView targetView = new ImageView(target);
-
-
 
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
 
@@ -96,6 +109,27 @@ public class FishHunt extends Application {
         gamePane.getChildren().add(canvas);
 
         iniGamePane(gamePane, targetView);
+
+        //Initialisation de la scene HighScore
+
+        Text titreHighScore = new Text("Meilleurs scores");
+
+        HighScoreManager scoreManager = new HighScoreManager();
+
+        ArrayList<String> scores = scoreManager.getScores();
+
+        ListView<String> scoresView = new ListView<String>();
+
+        scoresView.getItems().setAll(scores);
+
+        Button menuButton = new Button("Menu");
+
+        menuButton.setOnMouseClicked(mouseEvent -> {
+            primaryStage.setScene(menu);
+        });
+
+        iniHighScore(highScoreVBox,titreHighScore,scoresView,menuButton);
+
         //creation du controller
         Controller controller = new Controller();
         game.setOnMouseMoved((event) -> {
