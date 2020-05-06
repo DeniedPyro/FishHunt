@@ -81,21 +81,6 @@ public class FishHunt extends Application {
 
         Scene game = new Scene(gamePane, WIDTH, HEIGHT);
 
-        //Initialisation de la scene MainMenu
-
-        Button gameButton = new Button("Nouvelle Partie!");
-
-        Button scoreButton = new Button("Meilleurs scores");
-
-        gameButton.setOnMouseClicked(mouseEvent -> {
-            primaryStage.setScene(game);
-        });
-        scoreButton.setOnMouseClicked(mouseEvent -> {
-            primaryStage.setScene(highScore);
-        });
-
-        iniMainMenu(mainMenu, gameButton, scoreButton);
-
         //Initialisation de la scene Game
 
         Image target = new Image("/Image/cible.png");
@@ -189,7 +174,24 @@ public class FishHunt extends Application {
                 lastTime = now;
             }
         };
-        timer.start();
+
+        //Initialisation de la scene MainMenu
+
+        Button gameButton = new Button("Nouvelle Partie!");
+
+        Button scoreButton = new Button("Meilleurs scores");
+
+        gameButton.setOnMouseClicked(mouseEvent -> {
+            primaryStage.setScene(game);
+            timer.stop();
+            timer.start();
+        });
+        scoreButton.setOnMouseClicked(mouseEvent -> {
+            primaryStage.setScene(highScore);
+        });
+
+        iniMainMenu(mainMenu, gameButton, scoreButton);
+
         primaryStage.setScene(menu);
         primaryStage.setTitle("Fish Hunt");
         primaryStage.show();

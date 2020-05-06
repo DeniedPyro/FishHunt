@@ -74,7 +74,7 @@ public class Game {
         int basex = generateNumBetween(0,1);
         int imageIndex = generateNumBetween(0,1);
         Image fishImage = specialImages[imageIndex];
-        int x = -100;
+        int x = -130;
         double vx = 100 * Math.cbrt(level) + 200;
         if(basex == 0){
             x = WIDTH;
@@ -96,7 +96,7 @@ public class Game {
         int basex = generateNumBetween(0,1);
         int imageIndex = generateNumBetween(0,7);
         Image fishImage = images[imageIndex];
-        int x = -100;
+        int x = -130;
         double vx = 100 * Math.cbrt(level) + 200;
         if(basex == 0){
             x = WIDTH;
@@ -134,6 +134,7 @@ public class Game {
          *Cree les bulles a chaque 3 secondes
          */
         cooldown -=dt;
+        System.out.println(cooldown);
         if (cooldown < 0) {
             if (allowSpecialFish) {
                 this.specialFishTimeIntervalTrack += dt;
@@ -161,7 +162,6 @@ public class Game {
                         this.ammo.remove(a);
                     }
                 }
-
             }
             if (scoreTracker == 5) {
                 scoreTracker = 0;
@@ -193,6 +193,12 @@ public class Game {
                 b.update(dt);
             }
         }
+        if (!this.fish.isEmpty()) {
+            for (int i = 0; i < this.fish.size(); i++) {
+                Fish f = this.fish.get(i);
+                f.update(dt);
+            }
+        }
     }
 
 
@@ -221,7 +227,7 @@ public class Game {
                 context.clearRect(fish.getX(),fish.getY(),fish.getWidth(),fish.getHeight());
                 this.fish.remove(i);
             }
-            else if (fish.getX() >= -100 && fish.getX() <= WIDTH){
+            else if (fish.getX() >= -130 && fish.getX() <= WIDTH){
                 fish.draw(context);
             }
             else {
