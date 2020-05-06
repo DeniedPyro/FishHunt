@@ -9,8 +9,8 @@ class Fish extends Entity {
         this.y = y;
         this.vy = vy;
         this.vx = vx ;
-        this.width = 100;
-        this.height = 100;
+        this.width = 175;
+        this.height = 175;
         this.image = image;
         this.ay = 100;
     }

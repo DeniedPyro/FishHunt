@@ -28,6 +28,7 @@ public class Game {
     private int level = 1;
     private int lives = 3;
     private int score = 0;
+    private double cooldown = 3 ;
     private int scoreTracker = 0;
     private boolean allowSpecialFish = false;
 
@@ -132,14 +133,53 @@ public class Game {
         /**
          *Cree les bulles a chaque 3 secondes
          */
-        if (allowSpecialFish){
-            this.specialFishTimeIntervalTrack += dt;
-            if (this.specialFishTimeIntervalTrack > 5.0) {
-                addSpecialFish(fish);
-                this.specialFishTimeIntervalTrack = 0;
+        cooldown -=dt;
+        if (cooldown < 0) {
+            if (allowSpecialFish) {
+                this.specialFishTimeIntervalTrack += dt;
+                if (this.specialFishTimeIntervalTrack > 5.0) {
+                    addSpecialFish(fish);
+                    this.specialFishTimeIntervalTrack = 0;
+                }
+            }
+            this.fishTimeIntervalTrack += dt;
+            if (this.fishTimeIntervalTrack > 3.0) {
+                addFish(fish);
+                this.fishTimeIntervalTrack = 0;
+            }
+
+            for (int i = 0; i < this.ammo.size(); i++) {
+                Ammo a = this.ammo.get(i);
+                for (int j = 0; j < this.fish.size(); j++) {
+                    Fish f = this.fish.get(j);
+                    if (a.getR() <= 0) {
+                        if (a.intersects(f)) {
+                            f.isKilled();
+                            incrementScore();
+                            scoreTracker += 1;
+                        }
+                        this.ammo.remove(a);
+                    }
+                }
+
+            }
+            if (scoreTracker == 5) {
+                scoreTracker = 0;
+                incrementLevel();
+                cooldown =  3 ;
+            }
+            if (level >= 2 && !allowSpecialFish) {
+                allowSpecialFish = true;
             }
         }
-        this.fishTimeIntervalTrack += dt;
+
+        if (!this.ammo.isEmpty()) {
+            for (int i = 0; i < this.ammo.size(); i++) {
+                Ammo a = this.ammo.get(i);
+                a.update(dt);
+            }
+        }
+
         this.bubbleTimeIntervalTrack += dt;
         if (this.bubbleTimeIntervalTrack > 3.0 && this.bubbles.isEmpty()) {
             for (int i = 0; i < 3; i++) {
@@ -152,45 +192,6 @@ public class Game {
                 Bubble b = this.bubbles.get(i);
                 b.update(dt);
             }
-        }
-        if (this.fishTimeIntervalTrack > 3.0) {
-            addFish(fish);
-            this.fishTimeIntervalTrack = 0;
-        }
-        if(!this.fish.isEmpty()){
-            for(int i = 0; i < this.fish.size(); i++) {
-                Fish f = this.fish.get(i);
-                f.update(dt);
-            }
-        }
-
-        if (!this.ammo.isEmpty()) {
-            for (int i = 0; i < this.ammo.size(); i++){
-                Ammo a = this.ammo.get(i);
-                a.update(dt);
-            }
-        }
-        for(int i = 0; i < this.ammo.size(); i++){
-            Ammo a = this.ammo.get(i);
-            for(int j = 0; j < this.fish.size(); j++){
-                Fish f = this.fish.get(j);
-                if (a.getR()<=0){
-                    if (a.intersects(f)){
-                        f.isKilled();
-                        incrementScore();
-                        scoreTracker +=1;
-                    }
-                    this.ammo.remove(a);
-                }
-            }
-
-        }
-        if (scoreTracker == 5) {
-            scoreTracker = 0;
-            incrementLevel();
-        }
-        if(level >= 2 && !allowSpecialFish){
-            allowSpecialFish = true;
         }
     }
 
@@ -226,7 +227,9 @@ public class Game {
             else {
                 context.clearRect(fish.getX(),fish.getY(),fish.getWidth(),fish.getHeight());
                 this.fish.remove(i);
-                lives -= 1;
+                if ( cooldown < 0){
+                    lives -= 1;
+                }
             }
         }
 
