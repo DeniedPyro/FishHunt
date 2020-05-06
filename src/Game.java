@@ -80,11 +80,6 @@ public class Game {
             vx *= -1;
             fishImage = ImageHelpers.flop(fishImage);
         }
-        int r = generateNumBetween(0,255);
-        int g = generateNumBetween(0,255);
-        int b = generateNumBetween(0,255);
-        Color color = Color.rgb(r,g,b);
-        fishImage = ImageHelpers.colorize(fishImage,color);
         int y = generateNumBetween(96,384);
         if(imageIndex == 0) {
             f.add(new Crab(x,y,1.3*vx,fishImage));
@@ -185,9 +180,10 @@ public class Game {
                         incrementScore();
                         scoreTracker +=1;
                     }
+                    this.ammo.remove(a);
                 }
             }
-            this.ammo.remove(a);
+
         }
         if (scoreTracker == 5) {
             scoreTracker = 0;

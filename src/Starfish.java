@@ -3,10 +3,12 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class Starfish extends Fish {
-
+    private double timeTracker = 0.0;
+    private double posY;
     public Starfish(double x, double y, double vx, Image image) {
         super(x,y,vx,0,image);
         this.color = Color.LIGHTGREEN;
+        posY = y;
     }
 
     private void resetColor(){
@@ -20,7 +22,8 @@ public class Starfish extends Fish {
     public void update(double dt) {
         // Physique du personnage
         super.update(dt);
-        vy = 50.0 * Math.sin(dt);
+        timeTracker += dt;
+        y = 50*Math.sin(2*Math.PI/timeTracker) + posY;
 
     }
     /** permet de dessiner le startfish
