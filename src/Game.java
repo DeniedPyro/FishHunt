@@ -15,16 +15,21 @@ public class Game {
             new Image("Image/fish/05.png"),
             new Image("Image/fish/06.png"),
             new Image("Image/fish/07.png")};
+    private Image[] specialImages = {new Image("Image/crabe.png"),
+            new Image("Image/star.png")};
     private ArrayList<Bubble> bubbles = new ArrayList<Bubble>();
     private ArrayList<Ammo> ammo = new ArrayList<Ammo>();
     private ArrayList<Fish> fish = new ArrayList<Fish>();
     private Random R = new Random();
     private double bubbleTimeIntervalTrack = 0.0;
     private double fishTimeIntervalTrack = 0.0;
+    private double specialFishTimeIntervalTrack = 0.0;
     private boolean lock = false;
     private int level = 1;
     private int lives = 3;
     private int score = 0;
+    private int scoreTracker = 0;
+    private boolean allowSpecialFish = false;
 
     public Game() {
     }
@@ -64,6 +69,33 @@ public class Game {
     /**Ajoute une groupe de bulle a la liste
      * @param f
      */
+    private void addSpecialFish(ArrayList<Fish> f) {
+        int basex = generateNumBetween(0,1);
+        int imageIndex = generateNumBetween(0,1);
+        Image fishImage = specialImages[imageIndex];
+        int x = -100;
+        double vx = 100 * Math.cbrt(level) + 200;
+        if(basex == 0){
+            x = WIDTH;
+            vx *= -1;
+            fishImage = ImageHelpers.flop(fishImage);
+        }
+        int r = generateNumBetween(0,255);
+        int g = generateNumBetween(0,255);
+        int b = generateNumBetween(0,255);
+        Color color = Color.rgb(r,g,b);
+        fishImage = ImageHelpers.colorize(fishImage,color);
+        int y = generateNumBetween(96,384);
+        if(imageIndex == 0) {
+            f.add(new Crab(x,y,1.3*vx,fishImage));
+        }
+        else{
+            f.add(new Starfish(x,y,vx,fishImage));
+        }
+
+
+
+    }
     private void addFish(ArrayList<Fish> f) {
         int basex = generateNumBetween(0,1);
         int imageIndex = generateNumBetween(0,7);
@@ -105,6 +137,13 @@ public class Game {
         /**
          *Cree les bulles a chaque 3 secondes
          */
+        if (allowSpecialFish){
+            this.specialFishTimeIntervalTrack += dt;
+            if (this.specialFishTimeIntervalTrack > 5.0) {
+                addSpecialFish(fish);
+                this.specialFishTimeIntervalTrack = 0;
+            }
+        }
         this.fishTimeIntervalTrack += dt;
         this.bubbleTimeIntervalTrack += dt;
         if (this.bubbleTimeIntervalTrack > 3.0 && this.bubbles.isEmpty()) {
@@ -144,10 +183,18 @@ public class Game {
                     if (a.intersects(f)){
                         f.isKilled();
                         incrementScore();
+                        scoreTracker +=1;
                     }
-                    this.ammo.remove(a);
                 }
             }
+            this.ammo.remove(a);
+        }
+        if (scoreTracker == 5) {
+            scoreTracker = 0;
+            incrementLevel();
+        }
+        if(level >= 2 && !allowSpecialFish){
+            allowSpecialFish = true;
         }
     }
 
