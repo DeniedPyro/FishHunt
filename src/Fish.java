@@ -1,14 +1,31 @@
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
 class Fish extends Entity {
-
-    public Fish (double x, double y, double vx , double vy){
+    protected Image image;
+    protected boolean dead = false;
+    public Fish (double x, double y, double vx , double vy, Image image){
         this.x = x;
-        this.y = y ;
+        this.y = y;
         this.vy = vy;
         this.vx = vx ;
-        this.largeur = 100;
-        this.hauteur = 100;
+        this.width = 100;
+        this.height = 100;
+        this.image = image;
+        this.ay = 100;
+    }
+    public double getX(){
+        return x;
+    }
+    public double getY(){
+        return y;
+    }
+
+    public double getHeight(){
+        return height;
+    }
+    public double getWidth(){
+        return width;
     }
 
     /** Permet de mettre a jour la position,vitesse et acceleration de la poisson
@@ -20,15 +37,17 @@ class Fish extends Entity {
         super.update(dt);
 
     }
-
-
+    public void isKilled(){
+        dead = true;
+    }
+    public boolean isDead(){
+        return dead;
+    }
     /** permet de dessiner la plateforme avec une position initiale
      * @param context
      */
     @Override
     public void draw(GraphicsContext context) {
-        context.setFill(color);
-        context.fillRect(x, y, largeur, hauteur);
+        context.drawImage(image, x, y, width, height);
     }
-
 }

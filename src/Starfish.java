@@ -1,12 +1,11 @@
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class Starfish extends Fish {
 
-    public Starfish(double x, double y, double vx, double vy) {
-        super(x,y,vx,vy);
-        this.largeur = 100;
-        this.hauteur = 100;
+    public Starfish(double x, double y, double vx, double vy, Image image) {
+        super(x,y,vx,vy,image);
         this.color = Color.LIGHTGREEN;
     }
 

@@ -1,4 +1,5 @@
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -6,11 +7,20 @@ import java.util.Random;
 
 public class Game {
     public static final int WIDTH = 640, HEIGHT = 480;
+    private Image[] images = {new Image("Image/fish/00.png"),
+            new Image("Image/fish/01.png"),
+            new Image("Image/fish/02.png"),
+            new Image("Image/fish/03.png"),
+            new Image("Image/fish/04.png"),
+            new Image("Image/fish/05.png"),
+            new Image("Image/fish/06.png"),
+            new Image("Image/fish/07.png")};
     private ArrayList<Bubble> bubbles = new ArrayList<Bubble>();
     private ArrayList<Ammo> ammo = new ArrayList<Ammo>();
     private ArrayList<Fish> fish = new ArrayList<Fish>();
     private Random R = new Random();
     private double bubbleTimeIntervalTrack = 0.0;
+    private double fishTimeIntervalTrack = 0.0;
     private boolean lock = false;
     private int level = 1;
     private int lives = 3;
@@ -52,8 +62,30 @@ public class Game {
 
 
     /**Ajoute une groupe de bulle a la liste
-     * @param b
+     * @param f
      */
+    private void addFish(ArrayList<Fish> f) {
+        int basex = generateNumBetween(0,1);
+        int imageIndex = generateNumBetween(0,7);
+        Image fishImage = images[imageIndex];
+        int x = -100;
+        double vx = 100 * Math.cbrt(level) + 200;
+        if(basex == 0){
+            x = WIDTH;
+            vx *= -1;
+            fishImage = ImageHelpers.flop(fishImage);
+        }
+        int r = generateNumBetween(0,255);
+        int g = generateNumBetween(0,255);
+        int b = generateNumBetween(0,255);
+        Color color = Color.rgb(r,g,b);
+        fishImage = ImageHelpers.colorize(fishImage,color);
+
+        int vy = generateNumBetween(100, 200);
+        int y = generateNumBetween(96,384);
+        f.add(new Fish(x,y,vx,-vy,fishImage));
+    }
+
     private void addBubbleGroup(ArrayList<Bubble> b) {
         Bubble[] balle = new Bubble[5];
         int basex = generateNumBetween(0, WIDTH);
@@ -73,7 +105,7 @@ public class Game {
         /**
          *Cree les bulles a chaque 3 secondes
          */
-
+        this.fishTimeIntervalTrack += dt;
         this.bubbleTimeIntervalTrack += dt;
         if (this.bubbleTimeIntervalTrack > 3.0 && this.bubbles.isEmpty()) {
             for (int i = 0; i < 3; i++) {
@@ -81,17 +113,40 @@ public class Game {
             }
             this.bubbleTimeIntervalTrack = 0;
         }
-
         if (!this.bubbles.isEmpty()) {
             for (int i = 0; i < this.bubbles.size(); i++) {
                 Bubble b = this.bubbles.get(i);
                 b.update(dt);
             }
         }
+        if (this.fishTimeIntervalTrack > 3.0) {
+            addFish(fish);
+            this.fishTimeIntervalTrack = 0;
+        }
+        if(!this.fish.isEmpty()){
+            for(int i = 0; i < this.fish.size(); i++) {
+                Fish f = this.fish.get(i);
+                f.update(dt);
+            }
+        }
+
         if (!this.ammo.isEmpty()) {
             for (int i = 0; i < this.ammo.size(); i++){
                 Ammo a = this.ammo.get(i);
                 a.update(dt);
+            }
+        }
+        for(int i = 0; i < this.ammo.size(); i++){
+            Ammo a = this.ammo.get(i);
+            for(int j = 0; j < this.fish.size(); j++){
+                Fish f = this.fish.get(j);
+                if (a.getR()<=0){
+                    if (a.intersects(f)){
+                        f.isKilled();
+                        incrementScore();
+                    }
+                    this.ammo.remove(a);
+                }
             }
         }
     }
@@ -116,6 +171,22 @@ public class Game {
             Ammo ammo = this.ammo.get(i);
             ammo.draw(context);
         }
+        for (int i = 0; i < this.fish.size(); i++){
+            Fish fish = this.fish.get(i);
+            if (fish.isDead()){
+                context.clearRect(fish.getX(),fish.getY(),fish.getWidth(),fish.getHeight());
+                this.fish.remove(i);
+            }
+            else if (fish.getX() >= -100 && fish.getX() <= WIDTH){
+                fish.draw(context);
+            }
+            else {
+                context.clearRect(fish.getX(),fish.getY(),fish.getWidth(),fish.getHeight());
+                this.fish.remove(i);
+                lives -= 1;
+            }
+        }
+
     }
 
     public void stop() {
