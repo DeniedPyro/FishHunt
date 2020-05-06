@@ -7,7 +7,6 @@ public class Starfish extends Fish {
     private double posY;
     public Starfish(double x, double y, double vx, Image image) {
         super(x,y,vx,0,image);
-        this.color = Color.LIGHTGREEN;
         posY = y;
     }
 
@@ -23,7 +22,7 @@ public class Starfish extends Fish {
         // Physique du personnage
         super.update(dt);
         timeTracker += dt;
-        y = 100*Math.sin((2*Math.PI*2)*timeTracker)+ posY;
+        y = 50*Math.sin((2*Math.PI)*timeTracker) + posY;
 
     }
     /** permet de dessiner le startfish
