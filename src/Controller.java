@@ -1,9 +1,8 @@
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-
-import javax.swing.text.html.ImageView;
 
 
 public class Controller {
@@ -29,13 +28,13 @@ public class Controller {
 
         game.update(deltaTime);
         if(game.getLives() == 0){
-            resetJeu();
+            if(!game.isGameOver()){
+                game.setGameOver(true);
+                game.setCoolDown(3.0);
+            }
+            gameOver();
         }
     }
-
-
-
-
 
 
     /** call la methode stop du game
@@ -51,10 +50,15 @@ public class Controller {
 
     void updateLives(HBox lives){
         switch (game.getLives()) {
-            case 1:
+            case 0:
                 lives.getChildren().get(2).setVisible(false);
                 lives.getChildren().get(1).setVisible(false);
                 lives.getChildren().get(0).setVisible(false);
+                break;
+            case 1:
+                lives.getChildren().get(2).setVisible(false);
+                lives.getChildren().get(1).setVisible(false);
+                lives.getChildren().get(0).setVisible(true);
                 break;
             case 2:
                 lives.getChildren().get(2).setVisible(false);
@@ -67,27 +71,6 @@ public class Controller {
                 lives.getChildren().get(0).setVisible(true);
                 break;
         }
-//        if ( game.getLives() == 3){
-//            lives.getChildren().get(2).setVisible(true);
-//            lives.getChildren().get(1).setVisible(true);
-//            lives.getChildren().get(0).setVisible(true);
-//        }
-//        else if (game.getLives() == 2){
-//            lives.getChildren().get(2).setVisible(false);
-//            lives.getChildren().get(1).setVisible(true);
-//            lives.getChildren().get(0).setVisible(true);
-//        }
-//        else if (game.getLives() == 1){
-//            lives.getChildren().get(2).setVisible(false);
-//            lives.getChildren().get(1).setVisible(false);
-//            lives.getChildren().get(0).setVisible(true);
-//        }
-//        else {
-//            lives.getChildren().get(2).setVisible(false);
-//            lives.getChildren().get(1).setVisible(false);
-//            lives.getChildren().get(0).setVisible(false);
-//        }
-
     }
 
     void updateScore(Text text){
@@ -95,11 +78,28 @@ public class Controller {
     }
 
     void updateLevelText(Text level){
-        level.setText("Level "+ game.getLevel());
+        if(game.getCoolDown() > 0 && game.getLives() != 0){
+            if(!level.getFill().equals(Color.rgb(255,255,255))){
+                level.setFill(Color.rgb(255,255,255));
+            }
+            level.setText("Level "+ game.getLevel());
+            level.setVisible(true);
+        }
+        else if (game.getCoolDown() > 0 && game.getLives() == 0) {
+            level.setText("Game Over");
+            level.setFill(Color.rgb(255,0,0));
+            level.setVisible(true);
+        }
+        else {
+            level.setVisible(false);
+        }
     }
 
-    void resetJeu(){
-        game.resetJeu();
+    void gameOver(){
+        if (game.getCoolDown() <=  0) {
+            game.reset();
+        }
+
     }
 
     void incrementLives(){

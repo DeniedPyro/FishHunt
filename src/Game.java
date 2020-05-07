@@ -29,8 +29,9 @@ public class Game {
     private int lives = 3;
     private int score = 0;
     private double cooldown = 3 ;
-    private int scoreTracker = 0;
+    private int levelScore = 0;
     private boolean allowSpecialFish = false;
+    private boolean gameOver = false ;
 
     public Game() {
     }
@@ -45,15 +46,29 @@ public class Game {
         return this.score ;
     }
 
+    public double getCoolDown(){
+        return this.cooldown;
+    }
+
+    public boolean isGameOver(){
+        return gameOver;
+    }
+
+    public void setGameOver(boolean bool){
+        gameOver = bool;
+    }
+
+    public void setCoolDown(double cooldown){
+        this.cooldown = cooldown;
+    }
+
     public int getLives(){
         return this.lives;
     }
 
-
     public int getLevel(){
         return this.level;
     }
-
 
     public void incrementLevel(){
         this.level += 1;
@@ -168,14 +183,14 @@ public class Game {
                         if (a.intersects(f)) {
                             f.isKilled();
                             incrementScore();
-                            scoreTracker += 1;
+                            levelScore += 1;
                         }
                         this.ammo.remove(a);
                     }
                 }
             }
-            if (scoreTracker == 5) {
-                scoreTracker = 0;
+            if (levelScore == 5) {
+                levelScore = 0;
                 incrementLevel();
                 cooldown =  3 ;
             }
@@ -212,7 +227,6 @@ public class Game {
         }
     }
 
-
     /**Permet de dessiner la le contenue du jeu
      * @param context
      */
@@ -244,7 +258,7 @@ public class Game {
             else {
                 context.clearRect(fish.getX(),fish.getY(),fish.getWidth(),fish.getHeight());
                 this.fish.remove(i);
-                if ( cooldown < 0){
+                if ( cooldown < 0 && lives > 0){
                     lives -= 1;
                 }
             }
@@ -256,9 +270,27 @@ public class Game {
         System.out.println("kk");
     }
 
-    /**Permet relancer le jeu
+    /**detecte la defaite du joueur
      */
-    public void resetJeu() {
+    public void resetGame() {
+        bubbles.clear();
+        ammo.clear();
+        fish.clear();
+        bubbleTimeIntervalTrack = 0.0;
+        fishTimeIntervalTrack = 0.0;
+        specialFishTimeIntervalTrack = 0.0;
+        level = 1;
+        lives = 3;
+        score = 0;
+        cooldown = 3 ;
+        levelScore = 0;
+        allowSpecialFish = false;
+        gameOver = false;
+    }
+
+    /**detecte la defaite du joueur
+     */
+    public void reset() {
         System.out.println("resetting the game");
     }
 

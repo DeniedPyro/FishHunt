@@ -208,8 +208,10 @@ public class FishHunt extends Application {
                     controller.update(maxDt);
                     deltaTime -= maxDt;
                 }
-                //controller.updateLevelText();
                 controller.update(deltaTime);
+                controller.updateScore(killedFishCount);
+                controller.updateLives(lives);
+                controller.updateLevelText(levelCount);
                 controller.draw(context);
                 lastTime = now;
             }
