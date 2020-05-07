@@ -29,6 +29,27 @@ public class FishHunt extends Application {
      */
     public static final int WIDTH = 640, HEIGHT = 480;
 
+
+    public static void statusView(){
+
+        VBox main = new VBox(8);
+
+        //
+        Text killedFishCount = new Text("");
+
+
+        //Initializing lives view
+        HBox lives = new HBox(8);
+        Image fishLife = new Image("Image/fish/00.png");
+        ImageView fishLife1 = new ImageView(fishLife);
+        ImageView fishLife2 = new ImageView(fishLife);
+        ImageView fishLife3 = new ImageView(fishLife);
+        lives.getChildren().addAll(fishLife1,fishLife2,fishLife3);
+
+        Text LevelCount = new Text("");
+
+    }
+
     public static void iniMainMenu(VBox vBox,Button gameButton, Button scoreButton){
         vBox.setBackground(new Background(new BackgroundFill(Color.DARKBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
         Image logo = new Image("/Image/logo.png");
@@ -48,11 +69,11 @@ public class FishHunt extends Application {
         vBox.setPadding(new Insets(20,30,20,30));
     }
 
-    public static void iniGamePane(Pane pane,ImageView imageView){
+    public static void iniGamePane(Pane pane,ImageView imageView,VBox gameStatus){
         pane.setBackground(new Background(new BackgroundFill(Color.DARKBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
         imageView.setFitHeight(50);
         imageView.setFitWidth(50);
-        pane.getChildren().add(imageView);
+        pane.getChildren().addAll(imageView,gameStatus);
     }
     /**
      * @param args
@@ -78,41 +99,48 @@ public class FishHunt extends Application {
         Scene menu = new Scene(mainMenu, WIDTH, HEIGHT);
 
         Scene highScore = new Scene(highScoreVBox, WIDTH, HEIGHT);
-
         Scene game = new Scene(gamePane, WIDTH, HEIGHT);
 
         //Initialisation de la scene Game
-
         Image target = new Image("/Image/cible.png");
-
         ImageView targetView = new ImageView(target);
-
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
-
         GraphicsContext context = canvas.getGraphicsContext2D();
-
         gamePane.getChildren().add(canvas);
 
-        iniGamePane(gamePane, targetView);
+        ///Game status view containing the nb of killed fish
+        //etc.
+        VBox gameStatusView = new VBox(8);
+        Text killedFishCount = new Text("1");
+        //Initializing lives view
+        HBox lives = new HBox(8);
+        Image fishLife = new Image("Image/fish/00.png");
+        ImageView fishLife1 = new ImageView(fishLife);
+        fishLife1.setFitHeight(20);
+        fishLife1.setFitWidth(20);
+        ImageView fishLife2 = new ImageView(fishLife);
+        fishLife2.setFitHeight(20);
+        fishLife2.setFitWidth(20);
+        ImageView fishLife3 = new ImageView(fishLife);
+        fishLife3.setFitHeight(20);
+        fishLife3.setFitWidth(20);
+        lives.getChildren().addAll(fishLife1,fishLife2,fishLife3);
+        Text levelCount = new Text("Level 1");
+        gameStatusView.getChildren().addAll(killedFishCount,lives ,levelCount);
+        gameStatusView.setAlignment(Pos.CENTER);
+
+        iniGamePane(gamePane, targetView,gameStatusView);
 
         //Initialisation de la scene HighScore
-
         Text titreHighScore = new Text("Meilleurs scores");
-
         HighScoreManager scoreManager = new HighScoreManager();
-
         ArrayList<String> scores = scoreManager.getScores();
-
         ListView<String> scoresView = new ListView<String>();
-
         scoresView.getItems().setAll(scores);
-
         Button menuButton = new Button("Menu");
-
         menuButton.setOnMouseClicked(mouseEvent -> {
             primaryStage.setScene(menu);
         });
-
         iniHighScore(highScoreVBox,titreHighScore,scoresView,menuButton);
 
         //creation du controller
@@ -169,6 +197,7 @@ public class FishHunt extends Application {
                     controller.update(maxDt);
                     deltaTime -= maxDt;
                 }
+                //controller.updateLevelText();
                 controller.update(deltaTime);
                 controller.draw(context);
                 lastTime = now;
@@ -178,7 +207,6 @@ public class FishHunt extends Application {
         //Initialisation de la scene MainMenu
 
         Button gameButton = new Button("Nouvelle Partie!");
-
         Button scoreButton = new Button("Meilleurs scores");
 
         gameButton.setOnMouseClicked(mouseEvent -> {

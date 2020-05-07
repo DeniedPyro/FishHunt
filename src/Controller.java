@@ -18,6 +18,7 @@ public class Controller {
         game.draw(context);
     }
 
+
     /** call la methode update de game puis reset le game si la meduse est morte
      * @param deltaTime
      */
@@ -38,6 +39,10 @@ public class Controller {
     /** permet de reset le game
      *
      */
+
+    void updateLevelText(Text level){
+
+    }
     void resetJeu(){
         game.resetJeu();
     }
