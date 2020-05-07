@@ -214,6 +214,7 @@ public class FishHunt extends Application {
                 controller.updateLevelText(levelCount);
                 controller.draw(context);
                 lastTime = now;
+                System.out.println("wtfkkkk");
             }
         };
 
@@ -224,7 +225,7 @@ public class FishHunt extends Application {
 
         gameButton.setOnMouseClicked(mouseEvent -> {
             primaryStage.setScene(game);
-            timer.stop();
+            controller.setLock(false);
             timer.start();
         });
         scoreButton.setOnMouseClicked(mouseEvent -> {
@@ -232,7 +233,7 @@ public class FishHunt extends Application {
         });
 
         iniMainMenu(mainMenu, gameButton, scoreButton);
-        controller.setTimer(timer);
+        //controller.setTimer(timer);
         controller.setStage(primaryStage);
         controller.setHs(highScore);
 

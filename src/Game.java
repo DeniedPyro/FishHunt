@@ -24,7 +24,7 @@ public class Game {
     private double bubbleTimeIntervalTrack = 0.0;
     private double fishTimeIntervalTrack = 0.0;
     private double specialFishTimeIntervalTrack = 0.0;
-    private boolean lock = false;
+    private boolean lock = true;
     private int level = 1;
     private int lives = 3;
     private int score = 0;
@@ -45,6 +45,10 @@ public class Game {
 
     public int getScore(){
         return this.score ;
+    }
+
+    public void setLock(boolean bool){
+        this.lock = bool;
     }
 
     public double getCoolDown(){
@@ -165,9 +169,11 @@ public class Game {
         /**
          *Cree les bulles a chaque 3 secondes
          */
-        cooldown -=dt;
-        System.out.println(cooldown);
-        if (cooldown < 0) {
+        if(this.cooldown  > 0 && !lock){
+            this.cooldown -=dt;
+            System.out.println(cooldown);
+        }
+        if (this.cooldown <= 0) {
             if (allowSpecialFish) {
                 this.specialFishTimeIntervalTrack += dt;
                 if (this.specialFishTimeIntervalTrack > 5.0) {
@@ -287,10 +293,11 @@ public class Game {
         this.level = 1;
         this.lives = 3;
         this.score = 0;
-        this.cooldown = 3 ;
+        this.lock = true;
+        this.cooldown = 3.0 ;
         this.levelScore = 0;
         this.allowSpecialFish = false;
-        this.gameOver = false;
+        this.setGameOver(false);
     }
 
     /**detecte la defaite du joueur

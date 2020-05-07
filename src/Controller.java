@@ -13,10 +13,14 @@ public class Controller {
     Game game;
     Stage stage;
     Scene hs ;
-    AnimationTimer timer;
+    AnimationTimer timer ;
 
     public Controller() {
         game = new Game();
+    }
+
+    public void setLock(boolean bool){
+        game.setLock(bool);
     }
 
     public void setHs(Scene hs) {
@@ -27,9 +31,9 @@ public class Controller {
         this.stage = stage;
     }
 
-    void setTimer(AnimationTimer timer){
-        this.timer =timer;
-    }
+//    void setTimer(AnimationTimer timer){
+//        this.timer =timer;
+//    }
 
     /** Call la methode draw de game
      * @param context
@@ -48,7 +52,7 @@ public class Controller {
         if(game.getLives() == 0){
             if(!game.isGameOver()){
                 game.setGameOver(true);
-                game.setCoolDown(3.0);
+                game.setCoolDown(3);
             }
             this.gameOver();
         }
@@ -96,7 +100,7 @@ public class Controller {
     }
 
     void updateLevelText(Text level){
-        if(game.getCoolDown() > 0 && game.getLives() != 0){
+        if(game.getCoolDown() >= 0 && game.getLives() != 0){
             if(!level.getFill().equals(Color.rgb(255,255,255))){
                 level.setFill(Color.rgb(255,255,255));
             }
@@ -116,9 +120,9 @@ public class Controller {
     void gameOver(){
         if (game.getCoolDown() <=  0) {
             PlayerScore score = new PlayerScore("",game.getScore());
-            timer.stop();
             stage.setScene(hs);
             game.resetGame();
+            //timer.stop();
         }
 
     }
