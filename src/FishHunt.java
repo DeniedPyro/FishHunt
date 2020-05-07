@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class FishHunt extends Application {
     /**
@@ -69,11 +70,11 @@ public class FishHunt extends Application {
         vBox.setPadding(new Insets(20,30,20,30));
     }
 
-    public static void iniGamePane(Pane pane,ImageView imageView,VBox gameStatus){
+    public static void iniGamePane(Pane pane,ImageView imageView){
         pane.setBackground(new Background(new BackgroundFill(Color.DARKBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
         imageView.setFitHeight(50);
         imageView.setFitWidth(50);
-        pane.getChildren().addAll(imageView,gameStatus);
+        pane.getChildren().add(imageView);
     }
     /**
      * @param args
@@ -91,7 +92,7 @@ public class FishHunt extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        StackPane stackPane = new StackPane();
         Pane gamePane = new Pane();
         VBox highScoreVBox = new VBox();
         VBox mainMenu = new VBox();
@@ -99,7 +100,7 @@ public class FishHunt extends Application {
         Scene menu = new Scene(mainMenu, WIDTH, HEIGHT);
 
         Scene highScore = new Scene(highScoreVBox, WIDTH, HEIGHT);
-        Scene game = new Scene(gamePane, WIDTH, HEIGHT);
+        Scene game = new Scene(stackPane, WIDTH, HEIGHT);
 
         //Initialisation de la scene Game
         Image target = new Image("/Image/cible.png");
@@ -132,15 +133,14 @@ public class FishHunt extends Application {
         levelCount.setFont(Font.font(75));
         levelCount.setFill(Color.rgb(255,255,255));
         gameStatusView.getChildren().addAll(killedFishCount,lives,levelCount);
-        gameStatusView.setAlignment(Pos.CENTER);
+        gameStatusView.setAlignment(Pos.TOP_CENTER);
+        gameStatusView.setPadding(new Insets(20,0,0,0));
 
 
 
 
-
-        iniGamePane(gamePane, targetView,gameStatusView);
-        gamePane.getChildren().get(2).setLayoutX(WIDTH/2-105);
-        gamePane.getChildren().get(2).setLayoutY(30);
+        iniGamePane(gamePane, targetView);
+        stackPane.getChildren().addAll(gamePane,gameStatusView);
 
         //Initialisation de la scene HighScore
         Text titreHighScore = new Text("Meilleurs scores");
