@@ -1,16 +1,34 @@
 
+import javafx.animation.AnimationTimer;
+import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 
 public class Controller {
 
     Game game;
+    Stage stage;
+    Scene hs ;
+    AnimationTimer timer;
 
     public Controller() {
         game = new Game();
+    }
+
+    public void setHs(Scene hs) {
+        this.hs = hs;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    void setTimer(AnimationTimer timer){
+        this.timer =timer;
     }
 
     /** Call la methode draw de game
@@ -32,7 +50,7 @@ public class Controller {
                 game.setGameOver(true);
                 game.setCoolDown(3.0);
             }
-            gameOver();
+            this.gameOver();
         }
     }
 
@@ -97,7 +115,9 @@ public class Controller {
 
     void gameOver(){
         if (game.getCoolDown() <=  0) {
-            game.reset();
+            PlayerScore score = new PlayerScore("",game.getScore());
+            game.resetGame();
+            stage.setScene(hs);
         }
 
     }

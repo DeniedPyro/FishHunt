@@ -32,6 +32,7 @@ public class Game {
     private int levelScore = 0;
     private boolean allowSpecialFish = false;
     private boolean gameOver = false ;
+    private PlayerScore playerScore;
 
     public Game() {
     }
@@ -52,6 +53,10 @@ public class Game {
 
     public boolean isGameOver(){
         return gameOver;
+    }
+
+    public void setPlayerScore(PlayerScore playerScore) {
+        this.playerScore = playerScore;
     }
 
     public void setGameOver(boolean bool){
@@ -76,6 +81,7 @@ public class Game {
 
     public void incrementScore(){
         this.score +=1;
+        this.levelScore+=1;
     }
 
     public void die(){
@@ -183,7 +189,6 @@ public class Game {
                         if (a.intersects(f)) {
                             f.isKilled();
                             incrementScore();
-                            levelScore += 1;
                         }
                         this.ammo.remove(a);
                     }

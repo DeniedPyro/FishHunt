@@ -9,6 +9,22 @@ public class PlayerScore implements Serializable {
         this.score = score;
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     @Override
     public String toString() {
         return "PlayerScore [playerName=" + playerName + ", score=" + score + "]";

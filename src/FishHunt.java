@@ -232,6 +232,9 @@ public class FishHunt extends Application {
         });
 
         iniMainMenu(mainMenu, gameButton, scoreButton);
+        controller.setTimer(timer);
+        controller.setStage(primaryStage);
+        controller.setHs(highScore);
 
         primaryStage.setScene(menu);
         primaryStage.setTitle("Fish Hunt");
