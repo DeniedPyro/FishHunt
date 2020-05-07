@@ -200,8 +200,8 @@ public class Game {
                     }
                 }
             }
-            if (levelScore == 5) {
-                levelScore = 0;
+            if (levelScore >= 5) {
+                levelScore -= 5;
                 incrementLevel();
                 cooldown =  3 ;
             }

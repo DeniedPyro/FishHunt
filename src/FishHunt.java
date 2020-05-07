@@ -1,13 +1,17 @@
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -62,9 +66,9 @@ public class FishHunt extends Application {
         vBox.setSpacing(10);
         vBox.setPadding(new Insets(40,50,50,50));
     }
-    public static void iniHighScore(VBox vBox, Text titleHighScore, ListView<String> listScores, Button menuButton){
+    public static void iniHighScore(VBox vBox, Text titleHighScore, ListView<String> listScores,HBox highScoreInput ,Button menuButton){
         titleHighScore.setFont(Font.font("serif", 25));
-        vBox.getChildren().addAll(titleHighScore,listScores,menuButton);
+        vBox.getChildren().addAll(titleHighScore,listScores,highScoreInput,menuButton);
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(10);
         vBox.setPadding(new Insets(20,30,20,30));
@@ -136,23 +140,9 @@ public class FishHunt extends Application {
         gameStatusView.setAlignment(Pos.TOP_CENTER);
         gameStatusView.setPadding(new Insets(20,0,0,0));
 
-
-
-
         iniGamePane(gamePane, targetView);
         stackPane.getChildren().addAll(gamePane,gameStatusView);
 
-        //Initialisation de la scene HighScore
-        Text titreHighScore = new Text("Meilleurs scores");
-        HighScoreManager scoreManager = new HighScoreManager();
-        ArrayList<String> scores = scoreManager.getScores();
-        ListView<String> scoresView = new ListView<String>();
-        scoresView.getItems().setAll(scores);
-        Button menuButton = new Button("Menu");
-        menuButton.setOnMouseClicked(mouseEvent -> {
-            primaryStage.setScene(menu);
-        });
-        iniHighScore(highScoreVBox,titreHighScore,scoresView,menuButton);
 
         //creation du controller
         Controller controller = new Controller();
@@ -192,6 +182,14 @@ public class FishHunt extends Application {
                 controller.fire(mouseEvent.getX(),mouseEvent.getY());
             }
         });
+
+
+        HBox highScoreSubmit = new HBox(4);
+        highScoreSubmit.setAlignment(Pos.CENTER);
+        Label label = new Label("Votre nom : ");
+        TextField nameInput = new TextField();
+        Text scoreText = new Text();
+
         AnimationTimer timer = new AnimationTimer() {
             private long lastTime = 0;
             private final double maxDt = 0.01;
@@ -212,28 +210,53 @@ public class FishHunt extends Application {
                 controller.updateScore(killedFishCount);
                 controller.updateLives(lives);
                 controller.updateLevelText(levelCount);
+                controller.updateHighScore(scoreText);
                 controller.draw(context);
                 lastTime = now;
                 System.out.println("wtfkkkk");
             }
         };
 
-        //Initialisation de la scene MainMenu
 
         Button gameButton = new Button("Nouvelle Partie!");
         Button scoreButton = new Button("Meilleurs scores");
 
+        //controller.setTimer(timer);
+        //Initialisation de la scene HighScore
+        Text titreHighScore = new Text("Meilleurs scores");
+        HighScoreManager scoreManager = new HighScoreManager();
+        ListView<String> scoresView = new ListView<String>();
+        scoresView.getItems().setAll(scoreManager.getScores());
+        Button menuButton = new Button("Menu");
+        menuButton.setOnMouseClicked(mouseEvent -> {
+            highScoreSubmit.setVisible(true);
+            primaryStage.setScene(menu);
+        });
+
+        Button submit = new Button("Ajouter!");
+        submit.setOnAction(actionEvent -> {
+            PlayerScore scoreInput = new PlayerScore(nameInput.getText(),controller.getScore());
+            scoreManager.addScore(scoreInput);
+            controller.resetGame();
+            primaryStage.setScene(menu);
+            scoresView.getItems().setAll(scoreManager.getScores());
+        });
+        highScoreSubmit.getChildren().addAll(label,nameInput,scoreText,submit);
+        iniHighScore(highScoreVBox,titreHighScore,scoresView,highScoreSubmit,menuButton);
         gameButton.setOnMouseClicked(mouseEvent -> {
             primaryStage.setScene(game);
             controller.setLock(false);
             timer.start();
         });
         scoreButton.setOnMouseClicked(mouseEvent -> {
+            highScoreSubmit.setVisible(false);
             primaryStage.setScene(highScore);
         });
+        //Initialisation de la scene MainMenu
+
 
         iniMainMenu(mainMenu, gameButton, scoreButton);
-        //controller.setTimer(timer);
+
         controller.setStage(primaryStage);
         controller.setHs(highScore);
 
@@ -241,7 +264,7 @@ public class FishHunt extends Application {
         primaryStage.setTitle("Fish Hunt");
         primaryStage.show();
         primaryStage.setResizable(false);
-        //primaryStage.getIcons().add(new Image("/images/jellyfish1.png"));
+        primaryStage.getIcons().add(new Image("/Image/crabe.png"));
 
     }
 }

@@ -12,7 +12,7 @@ public class Controller {
 
     Game game;
     Stage stage;
-    Scene hs ;
+    Scene hs;
     AnimationTimer timer ;
 
     public Controller() {
@@ -58,7 +58,9 @@ public class Controller {
         }
     }
 
-
+    int getScore(){
+        return game.getScore();
+    }
     /** call la methode stop du game
      *
      */
@@ -69,7 +71,9 @@ public class Controller {
     /** permet de reset le game
      *
      */
-
+    void resetGame(){
+        game.resetGame();
+    }
     void updateLives(HBox lives){
         switch (game.getLives()) {
             case 0:
@@ -93,6 +97,9 @@ public class Controller {
                 lives.getChildren().get(0).setVisible(true);
                 break;
         }
+    }
+    void updateHighScore(Text text){
+        text.setText("a fait " + getScore() + " points!");
     }
 
     void updateScore(Text text){
@@ -121,10 +128,8 @@ public class Controller {
         if (game.getCoolDown() <=  0) {
             PlayerScore score = new PlayerScore("",game.getScore());
             stage.setScene(hs);
-            game.resetGame();
             //timer.stop();
         }
-
     }
 
     void incrementLives(){
