@@ -41,6 +41,20 @@ public class Game {
         }
     }
 
+    public int getScore(){
+        return this.score ;
+    }
+
+    public int getLives(){
+        return this.lives;
+    }
+
+
+    public int getLevel(){
+        return this.level;
+    }
+
+
     public void incrementLevel(){
         this.level += 1;
     }
@@ -53,9 +67,6 @@ public class Game {
         this.lives = 0;
     }
 
-    public int getLives(){
-        return this.lives;
-    }
 
     /**Genere un nombre entre min et max
      * @param min
