@@ -278,19 +278,19 @@ public class Game {
     /**detecte la defaite du joueur
      */
     public void resetGame() {
-        bubbles.clear();
-        ammo.clear();
-        fish.clear();
-        bubbleTimeIntervalTrack = 0.0;
-        fishTimeIntervalTrack = 0.0;
-        specialFishTimeIntervalTrack = 0.0;
-        level = 1;
-        lives = 3;
-        score = 0;
-        cooldown = 3 ;
-        levelScore = 0;
-        allowSpecialFish = false;
-        gameOver = false;
+        this.bubbles.clear();
+        this.ammo.clear();
+        this.fish.clear();
+        this.bubbleTimeIntervalTrack = 0.0;
+        this.fishTimeIntervalTrack = 0.0;
+        this.specialFishTimeIntervalTrack = 0.0;
+        this.level = 1;
+        this.lives = 3;
+        this.score = 0;
+        this.cooldown = 3 ;
+        this.levelScore = 0;
+        this.allowSpecialFish = false;
+        this.gameOver = false;
     }
 
     /**detecte la defaite du joueur

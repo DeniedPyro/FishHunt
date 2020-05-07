@@ -116,8 +116,9 @@ public class Controller {
     void gameOver(){
         if (game.getCoolDown() <=  0) {
             PlayerScore score = new PlayerScore("",game.getScore());
-            game.resetGame();
+            timer.stop();
             stage.setScene(hs);
+            game.resetGame();
         }
 
     }
