@@ -110,26 +110,37 @@ public class FishHunt extends Application {
 
         ///Game status view containing the nb of killed fish
         //etc.
-        VBox gameStatusView = new VBox(8);
+        VBox gameStatusView = new VBox(35);
         Text killedFishCount = new Text("1");
+        killedFishCount.setFont(Font.font(30));
+        killedFishCount.setFill(Color.rgb(255,255,255));
         //Initializing lives view
         HBox lives = new HBox(8);
         Image fishLife = new Image("Image/fish/00.png");
         ImageView fishLife1 = new ImageView(fishLife);
-        fishLife1.setFitHeight(20);
-        fishLife1.setFitWidth(20);
+        fishLife1.setFitHeight(30);
+        fishLife1.setFitWidth(30);
         ImageView fishLife2 = new ImageView(fishLife);
-        fishLife2.setFitHeight(20);
-        fishLife2.setFitWidth(20);
+        fishLife2.setFitHeight(30);
+        fishLife2.setFitWidth(30);
         ImageView fishLife3 = new ImageView(fishLife);
-        fishLife3.setFitHeight(20);
-        fishLife3.setFitWidth(20);
+        fishLife3.setFitHeight(30);
+        fishLife3.setFitWidth(30);
         lives.getChildren().addAll(fishLife1,fishLife2,fishLife3);
+        lives.setAlignment(Pos.CENTER);
         Text levelCount = new Text("Level 1");
-        gameStatusView.getChildren().addAll(killedFishCount,lives ,levelCount);
+        levelCount.setFont(Font.font(75));
+        levelCount.setFill(Color.rgb(255,255,255));
+        gameStatusView.getChildren().addAll(killedFishCount,lives,levelCount);
         gameStatusView.setAlignment(Pos.CENTER);
 
+
+
+
+
         iniGamePane(gamePane, targetView,gameStatusView);
+        gamePane.getChildren().get(2).setLayoutX(WIDTH/2-105);
+        gamePane.getChildren().get(2).setLayoutY(30);
 
         //Initialisation de la scene HighScore
         Text titreHighScore = new Text("Meilleurs scores");
