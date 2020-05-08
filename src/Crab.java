@@ -5,8 +5,8 @@ import javafx.scene.paint.Color;
 import java.awt.*;
 
 public class Crab extends Fish {
-    private double bruhTimer = 0.0;
-    private boolean bruh = true;
+    private double crabTimer = 0.0;
+    private boolean crabAdvance = true;
 
     public Crab(double x, double y, double vx, Image image) {
         super(x, y, vx, 0, image);
@@ -14,7 +14,7 @@ public class Crab extends Fish {
     }
 
     /**
-     * Permet de mettre a jour la position,vitesse et acceleration de la crabe
+     * Permet de mettre a jour la position,vitesse du crabe
      *
      * @param dt
      */
@@ -22,16 +22,15 @@ public class Crab extends Fish {
     public void update(double dt) {
         // Physique du personnage
         super.update(dt);
-        bruhTimer += dt;
-        if (bruhTimer > 0.5) {
+        crabTimer += dt;
+        if (crabTimer > 0.5) {
             vx *= -1;
-            if (bruh) {
-                bruhTimer = 0.25;
-                bruh = !bruh;
+            if (crabAdvance) {
+                crabTimer = 0.25;
             } else {
-                bruhTimer = 0.0;
-                bruh = !bruh;
+                crabTimer = 0.0;
             }
+            crabAdvance = !crabAdvance;
         }
     }
 

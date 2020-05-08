@@ -128,6 +128,7 @@ public class Game {
      */
     public void incrementLevel() {
         this.level += 1;
+        this.cooldown = 3;
     }
 
     /**

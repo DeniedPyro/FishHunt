@@ -14,7 +14,7 @@ public class HighScoreManager {
 
 
     /**
-     * Retourne les scores biem formatte sous forme dArrayList
+     * Retourne les scores bien formatte sous forme dArrayList
      */
     public ArrayList<String> getScores() {
         if (scores == null) {
