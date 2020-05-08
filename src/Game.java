@@ -37,24 +37,48 @@ public class Game {
     public Game() {
     }
 
-    public void incrementLives() {
-        if (this.lives < 3) {
-            this.lives += 1;
-        }
-    }
-
+    /**
+     * Getter du score
+     *
+     * @return int
+     */
     public int getScore() {
         return this.score;
     }
 
+    /**
+     * Setter du lock
+     *
+     * @param bool
+     */
     public void setLock(boolean bool) {
         this.lock = bool;
     }
 
+    /**
+     * Getter du coolDown
+     *
+     * @return double
+     */
     public double getCoolDown() {
         return this.cooldown;
     }
 
+    /**
+     * Setter du coolDown
+     *
+     * @param cooldown
+     */
+    public void setCoolDown(double cooldown) {
+        this.cooldown = cooldown;
+    }
+
+
+    /**
+     * Permet de savoir si le jeu est terminer
+     *
+     * @return boolean
+     */
     public boolean isGameOver() {
         return gameOver;
     }
@@ -63,31 +87,60 @@ public class Game {
         this.playerScore = playerScore;
     }
 
+    /**
+     * Setter du gameOver
+     *
+     * @param bool
+     */
     public void setGameOver(boolean bool) {
         gameOver = bool;
     }
 
-    public void setCoolDown(double cooldown) {
-        this.cooldown = cooldown;
-    }
-
+    /**
+     * Getter du nombre de vie
+     *
+     * @return int
+     */
     public int getLives() {
         return this.lives;
     }
 
+    /**
+     * Getter du niveau actuel
+     *
+     * @return int
+     */
     public int getLevel() {
         return this.level;
     }
 
+    /**
+     * Permet dincrementer le nombre de vies
+     */
+    public void incrementLives() {
+        if (this.lives < 3) {
+            this.lives += 1;
+        }
+    }
+
+    /**
+     * Permet dincrementer le niveau
+     */
     public void incrementLevel() {
         this.level += 1;
     }
 
+    /**
+     * Permet dincrementer le nombre le score
+     */
     public void incrementScore() {
         this.score += 1;
         this.levelScore += 1;
     }
 
+    /**
+     * Permet dincrementer le nombre le score
+     */
     public void die() {
         this.lives = 0;
     }
@@ -293,7 +346,7 @@ public class Game {
 
 
     /**
-     * reintialise game
+     * reintialise letat du jeu
      */
     public void resetGame() {
         this.bubbles.clear();
@@ -314,6 +367,9 @@ public class Game {
 
     /**
      * permet d'ajouter ammo a liste pour evaluer les collisions
+     *
+     * @param x
+     * @param y
      */
     public void fire(double x, double y) {
         Ammo fired = new Ammo(x, y);
