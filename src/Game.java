@@ -176,7 +176,6 @@ public class Game {
          */
         if (this.cooldown > 0 && !lock) {
             this.cooldown -= dt;
-            System.out.println(cooldown);
         }
         if (this.cooldown <= 0) {
             if (allowSpecialFish) {
