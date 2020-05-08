@@ -106,7 +106,7 @@ public class Game {
 
 
     /**
-     * Ajoute une groupe de bulle a la liste
+     * Ajoute un poisson special a la liste
      *
      * @param f
      */
@@ -131,6 +131,11 @@ public class Game {
 
     }
 
+    /**
+     * Ajoute un poisson a la liste
+     *
+     * @param f
+     */
     private void addFish(ArrayList<Fish> f) {
         int basex = generateNumBetween(0, 1);
         int imageIndex = generateNumBetween(0, 7);
@@ -153,6 +158,11 @@ public class Game {
         f.add(new Fish(x, y, vx, -vy, fishImage));
     }
 
+    /**
+     * Ajoute un groupe de bulle a la liste
+     *
+     * @param b
+     */
     private void addBubbleGroup(ArrayList<Bubble> b) {
         Bubble[] balle = new Bubble[5];
         int basex = generateNumBetween(0, WIDTH);
