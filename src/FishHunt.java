@@ -1,8 +1,6 @@
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -17,15 +15,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Stack;
 
 public class FishHunt extends Application {
     /**
@@ -35,13 +28,11 @@ public class FishHunt extends Application {
     public static final int WIDTH = 640, HEIGHT = 480;
 
 
-    public static void statusView(){
+    public static void statusView() {
 
         VBox main = new VBox(8);
 
-        //
         Text killedFishCount = new Text("");
-
 
         //Initializing lives view
         HBox lives = new HBox(8);
@@ -49,37 +40,38 @@ public class FishHunt extends Application {
         ImageView fishLife1 = new ImageView(fishLife);
         ImageView fishLife2 = new ImageView(fishLife);
         ImageView fishLife3 = new ImageView(fishLife);
-        lives.getChildren().addAll(fishLife1,fishLife2,fishLife3);
+        lives.getChildren().addAll(fishLife1, fishLife2, fishLife3);
 
         Text LevelCount = new Text("");
-
     }
 
-    public static void iniMainMenu(VBox vBox,Button gameButton, Button scoreButton){
+    public static void iniMainMenu(VBox vBox, Button gameButton, Button scoreButton) {
         vBox.setBackground(new Background(new BackgroundFill(Color.DARKBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
         Image logo = new Image("/Image/logo.png");
         ImageView logoView = new ImageView(logo);
-        logoView.setFitWidth(538 * 4/5);
-        logoView.setFitHeight(367 * 4/5);
-        vBox.getChildren().addAll(logoView,gameButton,scoreButton);
+        logoView.setFitWidth(538 * 4 / 5);
+        logoView.setFitHeight(367 * 4 / 5);
+        vBox.getChildren().addAll(logoView, gameButton, scoreButton);
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(10);
-        vBox.setPadding(new Insets(40,50,50,50));
-    }
-    public static void iniHighScore(VBox vBox, Text titleHighScore, ListView<String> listScores,HBox highScoreInput ,Button menuButton){
-        titleHighScore.setFont(Font.font("serif", 25));
-        vBox.getChildren().addAll(titleHighScore,listScores,highScoreInput,menuButton);
-        vBox.setAlignment(Pos.CENTER);
-        vBox.setSpacing(10);
-        vBox.setPadding(new Insets(20,30,20,30));
+        vBox.setPadding(new Insets(40, 50, 50, 50));
     }
 
-    public static void iniGamePane(Pane pane,ImageView imageView){
+    public static void iniHighScore(VBox vBox, Text titleHighScore, ListView<String> listScores, HBox highScoreInput, Button menuButton) {
+        titleHighScore.setFont(Font.font("serif", 25));
+        vBox.getChildren().addAll(titleHighScore, listScores, highScoreInput, menuButton);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setSpacing(10);
+        vBox.setPadding(new Insets(20, 30, 20, 30));
+    }
+
+    public static void iniGamePane(Pane pane, ImageView imageView) {
         pane.setBackground(new Background(new BackgroundFill(Color.DARKBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
         imageView.setFitHeight(50);
         imageView.setFitWidth(50);
         pane.getChildren().add(imageView);
     }
+
     /**
      * @param args
      */
@@ -118,7 +110,7 @@ public class FishHunt extends Application {
         VBox gameStatusView = new VBox(35);
         Text killedFishCount = new Text("1");
         killedFishCount.setFont(Font.font(30));
-        killedFishCount.setFill(Color.rgb(255,255,255));
+        killedFishCount.setFill(Color.rgb(255, 255, 255));
         //Initializing lives view
         HBox lives = new HBox(8);
         Image fishLife = new Image("Image/fish/00.png");
@@ -131,17 +123,17 @@ public class FishHunt extends Application {
         ImageView fishLife3 = new ImageView(fishLife);
         fishLife3.setFitHeight(30);
         fishLife3.setFitWidth(30);
-        lives.getChildren().addAll(fishLife1,fishLife2,fishLife3);
+        lives.getChildren().addAll(fishLife1, fishLife2, fishLife3);
         lives.setAlignment(Pos.CENTER);
         Text levelCount = new Text("Level 1");
         levelCount.setFont(Font.font(75));
-        levelCount.setFill(Color.rgb(255,255,255));
-        gameStatusView.getChildren().addAll(killedFishCount,lives,levelCount);
+        levelCount.setFill(Color.rgb(255, 255, 255));
+        gameStatusView.getChildren().addAll(killedFishCount, lives, levelCount);
         gameStatusView.setAlignment(Pos.TOP_CENTER);
-        gameStatusView.setPadding(new Insets(20,0,0,0));
+        gameStatusView.setPadding(new Insets(20, 0, 0, 0));
 
         iniGamePane(gamePane, targetView);
-        stackPane.getChildren().addAll(gamePane,gameStatusView);
+        stackPane.getChildren().addAll(gamePane, gameStatusView);
 
 
         //creation du controller
@@ -178,8 +170,8 @@ public class FishHunt extends Application {
             }
         });
         game.setOnMouseClicked(mouseEvent -> {
-            if (mouseEvent.getButton() == MouseButton.PRIMARY){
-                controller.fire(mouseEvent.getX(),mouseEvent.getY());
+            if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+                controller.fire(mouseEvent.getX(), mouseEvent.getY());
             }
         });
 
@@ -213,7 +205,6 @@ public class FishHunt extends Application {
                 controller.updateHighScore(scoreText);
                 controller.draw(context);
                 lastTime = now;
-                System.out.println("wtfkkkk");
             }
         };
 
@@ -235,14 +226,14 @@ public class FishHunt extends Application {
 
         Button submit = new Button("Ajouter!");
         submit.setOnAction(actionEvent -> {
-            PlayerScore scoreInput = new PlayerScore(nameInput.getText(),controller.getScore());
+            PlayerScore scoreInput = new PlayerScore(nameInput.getText(), controller.getScore());
             scoreManager.addScore(scoreInput);
             controller.resetGame();
             primaryStage.setScene(menu);
             scoresView.getItems().setAll(scoreManager.getScores());
         });
-        highScoreSubmit.getChildren().addAll(label,nameInput,scoreText,submit);
-        iniHighScore(highScoreVBox,titreHighScore,scoresView,highScoreSubmit,menuButton);
+        highScoreSubmit.getChildren().addAll(label, nameInput, scoreText, submit);
+        iniHighScore(highScoreVBox, titreHighScore, scoresView, highScoreSubmit, menuButton);
         gameButton.setOnMouseClicked(mouseEvent -> {
             primaryStage.setScene(game);
             controller.setLock(false);

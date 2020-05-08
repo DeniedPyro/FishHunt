@@ -28,34 +28,34 @@ public class Game {
     private int level = 1;
     private int lives = 3;
     private int score = 0;
-    private double cooldown = 3 ;
+    private double cooldown = 3;
     private int levelScore = 0;
     private boolean allowSpecialFish = false;
-    private boolean gameOver = false ;
+    private boolean gameOver = false;
     private PlayerScore playerScore;
 
     public Game() {
     }
 
-    public void incrementLives(){
-        if(this.lives < 3){
+    public void incrementLives() {
+        if (this.lives < 3) {
             this.lives += 1;
         }
     }
 
-    public int getScore(){
-        return this.score ;
+    public int getScore() {
+        return this.score;
     }
 
-    public void setLock(boolean bool){
+    public void setLock(boolean bool) {
         this.lock = bool;
     }
 
-    public double getCoolDown(){
+    public double getCoolDown() {
         return this.cooldown;
     }
 
-    public boolean isGameOver(){
+    public boolean isGameOver() {
         return gameOver;
     }
 
@@ -63,37 +63,39 @@ public class Game {
         this.playerScore = playerScore;
     }
 
-    public void setGameOver(boolean bool){
+    public void setGameOver(boolean bool) {
         gameOver = bool;
     }
 
-    public void setCoolDown(double cooldown){
+    public void setCoolDown(double cooldown) {
         this.cooldown = cooldown;
     }
 
-    public int getLives(){
+    public int getLives() {
         return this.lives;
     }
 
-    public int getLevel(){
+    public int getLevel() {
         return this.level;
     }
 
-    public void incrementLevel(){
+    public void incrementLevel() {
         this.level += 1;
     }
 
-    public void incrementScore(){
-        this.score +=1;
-        this.levelScore+=1;
+    public void incrementScore() {
+        this.score += 1;
+        this.levelScore += 1;
     }
 
-    public void die(){
+    public void die() {
         this.lives = 0;
     }
 
 
-    /**Genere un nombre entre min et max
+    /**
+     * Genere un nombre entre min et max
+     *
      * @param min
      * @param max
      * @return int
@@ -103,51 +105,52 @@ public class Game {
     }
 
 
-    /**Ajoute une groupe de bulle a la liste
+    /**
+     * Ajoute une groupe de bulle a la liste
+     *
      * @param f
      */
     private void addSpecialFish(ArrayList<Fish> f) {
-        int basex = generateNumBetween(0,1);
-        int imageIndex = generateNumBetween(0,1);
+        int basex = generateNumBetween(0, 1);
+        int imageIndex = generateNumBetween(0, 1);
         Image fishImage = specialImages[imageIndex];
         int x = -130;
         double vx = 100 * Math.cbrt(level) + 200;
-        if(basex == 0){
+        if (basex == 0) {
             x = WIDTH;
             vx *= -1;
             fishImage = ImageHelpers.flop(fishImage);
         }
-        int y = generateNumBetween(96,384);
-        if(imageIndex == 0) {
-            f.add(new Crab(x,y,1.3*vx,fishImage));
+        int y = generateNumBetween(96, 384);
+        if (imageIndex == 0) {
+            f.add(new Crab(x, y, 1.3 * vx, fishImage));
+        } else {
+            f.add(new Starfish(x, y, vx, fishImage));
         }
-        else{
-            f.add(new Starfish(x,y,vx,fishImage));
-        }
-
 
 
     }
+
     private void addFish(ArrayList<Fish> f) {
-        int basex = generateNumBetween(0,1);
-        int imageIndex = generateNumBetween(0,7);
+        int basex = generateNumBetween(0, 1);
+        int imageIndex = generateNumBetween(0, 7);
         Image fishImage = images[imageIndex];
         int x = -130;
         double vx = 100 * Math.cbrt(level) + 200;
-        if(basex == 0){
+        if (basex == 0) {
             x = WIDTH;
             vx *= -1;
             fishImage = ImageHelpers.flop(fishImage);
         }
-        int r = generateNumBetween(0,255);
-        int g = generateNumBetween(0,255);
-        int b = generateNumBetween(0,255);
-        Color color = Color.rgb(r,g,b);
-        fishImage = ImageHelpers.colorize(fishImage,color);
+        int r = generateNumBetween(0, 255);
+        int g = generateNumBetween(0, 255);
+        int b = generateNumBetween(0, 255);
+        Color color = Color.rgb(r, g, b);
+        fishImage = ImageHelpers.colorize(fishImage, color);
 
         int vy = generateNumBetween(100, 200);
-        int y = generateNumBetween(96,384);
-        f.add(new Fish(x,y,vx,-vy,fishImage));
+        int y = generateNumBetween(96, 384);
+        f.add(new Fish(x, y, vx, -vy, fishImage));
     }
 
     private void addBubbleGroup(ArrayList<Bubble> b) {
@@ -158,32 +161,34 @@ public class Game {
             int r = generateNumBetween(5, 20);
             int x = generateNumBetween(0, 40) - 20;
             int y = generateNumBetween(0, 20);
-            b.add(new Bubble(basex - x, HEIGHT - y , r, -v));
+            b.add(new Bubble(basex - x, HEIGHT - y, r, -v));
         }
     }
 
-    /** fait la mise a jour du jeu
+    /**
+     * fait la mise a jour du jeu
+     *
      * @param dt
      */
     public void update(double dt) {
         /**
          *Cree les bulles a chaque 3 secondes
          */
-        if(this.cooldown  > 0 && !lock){
-            this.cooldown -=dt;
+        if (this.cooldown > 0 && !lock) {
+            this.cooldown -= dt;
             System.out.println(cooldown);
         }
         if (this.cooldown <= 0) {
             if (allowSpecialFish) {
                 this.specialFishTimeIntervalTrack += dt;
                 if (this.specialFishTimeIntervalTrack > 5.0) {
-                    addSpecialFish(fish);
+                    this.addSpecialFish(fish);
                     this.specialFishTimeIntervalTrack = 0;
                 }
             }
             this.fishTimeIntervalTrack += dt;
             if (this.fishTimeIntervalTrack > 3.0) {
-                addFish(fish);
+                this.addFish(fish);
                 this.fishTimeIntervalTrack = 0;
             }
 
@@ -203,7 +208,7 @@ public class Game {
             if (levelScore >= 5) {
                 levelScore -= 5;
                 incrementLevel();
-                cooldown =  3 ;
+                this.setCoolDown(3);
             }
             if (level >= 2 && !allowSpecialFish) {
                 allowSpecialFish = true;
@@ -238,7 +243,9 @@ public class Game {
         }
     }
 
-    /**Permet de dessiner la le contenue du jeu
+    /**
+     * Permet de dessiner la le contenue du jeu
+     *
      * @param context
      */
     public void draw(GraphicsContext context) {
@@ -257,19 +264,17 @@ public class Game {
             Ammo ammo = this.ammo.get(i);
             ammo.draw(context);
         }
-        for (int i = 0; i < this.fish.size(); i++){
+        for (int i = 0; i < this.fish.size(); i++) {
             Fish fish = this.fish.get(i);
-            if (fish.isDead()){
-                context.clearRect(fish.getX(),fish.getY(),fish.getWidth(),fish.getHeight());
+            if (fish.isDead()) {
+                context.clearRect(fish.getX(), fish.getY(), fish.getWidth(), fish.getHeight());
                 this.fish.remove(i);
-            }
-            else if (fish.getX() >= -130 && fish.getX() <= WIDTH){
+            } else if (fish.getX() >= -130 && fish.getX() <= WIDTH) {
                 fish.draw(context);
-            }
-            else {
-                context.clearRect(fish.getX(),fish.getY(),fish.getWidth(),fish.getHeight());
+            } else {
+                context.clearRect(fish.getX(), fish.getY(), fish.getWidth(), fish.getHeight());
                 this.fish.remove(i);
-                if ( cooldown < 0 && lives > 0){
+                if (cooldown < 0 && lives > 0) {
                     lives -= 1;
                 }
             }
@@ -277,11 +282,9 @@ public class Game {
 
     }
 
-    public void stop() {
-        System.out.println("kk");
-    }
 
-    /**detecte la defaite du joueur
+    /**
+     * reintialise game
      */
     public void resetGame() {
         this.bubbles.clear();
@@ -294,18 +297,15 @@ public class Game {
         this.lives = 3;
         this.score = 0;
         this.lock = true;
-        this.cooldown = 3.0 ;
+        this.cooldown = 3.0;
         this.levelScore = 0;
         this.allowSpecialFish = false;
         this.setGameOver(false);
     }
 
-    /**detecte la defaite du joueur
+    /**
+     * permet d'ajouter ammo a liste pour evaluer les collisions
      */
-    public void reset() {
-        System.out.println("resetting the game");
-    }
-
     public void fire(double x, double y) {
         Ammo fired = new Ammo(x, y);
         this.ammo.add(fired);

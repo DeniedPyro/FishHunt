@@ -25,5 +25,11 @@ public abstract class Entity {
         x += dt * vx;
         y += dt * vy;
     }
+
+    /**
+     * Permet de dessiner lentite
+     *
+     * @param context
+     */
     public abstract void draw(GraphicsContext context);
 }

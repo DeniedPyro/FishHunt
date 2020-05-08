@@ -1,5 +1,3 @@
-
-import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.HBox;
@@ -13,29 +11,42 @@ public class Controller {
     Game game;
     Stage stage;
     Scene hs;
-    AnimationTimer timer ;
 
     public Controller() {
         game = new Game();
     }
 
-    public void setLock(boolean bool){
+    /**
+     * Permet de set la variable lock
+     *
+     * @param bool
+     */
+    public void setLock(boolean bool) {
         game.setLock(bool);
     }
 
+    /**
+     * Permet de set le highscore
+     *
+     * @param hs
+     */
     public void setHs(Scene hs) {
         this.hs = hs;
     }
 
+    /**
+     * Permet de set le stage
+     *
+     * @param stage
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
-//    void setTimer(AnimationTimer timer){
-//        this.timer =timer;
-//    }
 
-    /** Call la methode draw de game
+    /**
+     * Call la methode draw de game
+     *
      * @param context
      */
     void draw(GraphicsContext context) {
@@ -43,14 +54,16 @@ public class Controller {
     }
 
 
-    /** call la methode update de game puis reset le game si la meduse est morte
+    /**
+     * call la methode update de game puis reset le game si la meduse est morte
+     *
      * @param deltaTime
      */
     void update(double deltaTime) {
 
         game.update(deltaTime);
-        if(game.getLives() == 0){
-            if(!game.isGameOver()){
+        if (game.getLives() == 0) {
+            if (!game.isGameOver()) {
                 game.setGameOver(true);
                 game.setCoolDown(3);
             }
@@ -58,23 +71,27 @@ public class Controller {
         }
     }
 
-    int getScore(){
+
+    /**
+     * permet dobtenir le score de game
+     */
+    int getScore() {
         return game.getScore();
     }
-    /** call la methode stop du game
-     *
-     */
-    void stop() {
-        game.stop();
-    }
 
-    /** permet de reset le game
-     *
+    /**
+     * permet de reset le game
      */
-    void resetGame(){
+    void resetGame() {
         game.resetGame();
     }
-    void updateLives(HBox lives){
+
+    /**
+     * met a jour laffichage des vies du joueur
+     *
+     * @param lives
+     */
+    void updateLives(HBox lives) {
         switch (game.getLives()) {
             case 0:
                 lives.getChildren().get(2).setVisible(false);
@@ -98,55 +115,91 @@ public class Controller {
                 break;
         }
     }
-    void updateHighScore(Text text){
-        text.setText("a fait " + getScore() + " points!");
+
+    /**
+     * met a jour laffichage du score du joueur depuis
+     * le menu highscore
+     *
+     * @param score
+     */
+    void updateHighScore(Text score) {
+        score.setText("a fait " + getScore() + " points!");
     }
 
-    void updateScore(Text text){
-        text.setText(game.getScore()+"");
+
+    /**
+     * met a jour laffichage le score depuis le menu du jeu
+     *
+     * @param score
+     */
+    void updateScore(Text score) {
+        score.setText(game.getScore() + "");
     }
 
-    void updateLevelText(Text level){
-        if(game.getCoolDown() >= 0 && game.getLives() != 0){
-            if(!level.getFill().equals(Color.rgb(255,255,255))){
-                level.setFill(Color.rgb(255,255,255));
+    /**
+     * met a jour laffichage le niveau actuelle du jeu
+     *
+     * @param level
+     */
+    void updateLevelText(Text level) {
+        if (game.getCoolDown() >= 0 && game.getLives() != 0) {
+            if (!level.getFill().equals(Color.rgb(255, 255, 255))) {
+                level.setFill(Color.rgb(255, 255, 255));
             }
-            level.setText("Level "+ game.getLevel());
+            level.setText("Level " + game.getLevel());
             level.setVisible(true);
-        }
-        else if (game.getCoolDown() > 0 && game.getLives() == 0) {
+        } else if (game.getCoolDown() > 0 && game.getLives() == 0) {
             level.setText("Game Over");
-            level.setFill(Color.rgb(255,0,0));
+            level.setFill(Color.rgb(255, 0, 0));
             level.setVisible(true);
-        }
-        else {
+        } else {
             level.setVisible(false);
         }
     }
 
-    void gameOver(){
-        if (game.getCoolDown() <=  0) {
-            PlayerScore score = new PlayerScore("",game.getScore());
+    /**
+     * lance la procedure de gameover
+     */
+    void gameOver() {
+        if (game.getCoolDown() <= 0) {
+            PlayerScore score = new PlayerScore("", game.getScore());
             stage.setScene(hs);
             //timer.stop();
         }
     }
 
-    void incrementLives(){
-        game.incrementLives();           
+    /**
+     * incremente la valeur des vies
+     */
+    void incrementLives() {
+        game.incrementLives();
     }
 
-    void incrementLevel(){
+    /**
+     * incremente la valeur du niveau
+     */
+    void incrementLevel() {
         game.incrementLevel();
     }
 
-    void incrementScore(){
+    /**
+     * incremente la valeur du score
+     */
+    void incrementScore() {
         game.incrementScore();
     }
 
-    void die(){
+    /**
+     * valeur la des vies a 0
+     */
+    void die() {
         game.die();
     }
 
-    void fire(double x, double y) { game.fire(x, y); }
+    /**
+     * permet de tirer des balles
+     */
+    void fire(double x, double y) {
+        game.fire(x, y);
+    }
 }
