@@ -105,13 +105,13 @@ public class FishHunt extends Application {
         GraphicsContext context = canvas.getGraphicsContext2D();
         gamePane.getChildren().add(canvas);
 
-        ///Game status view containing the nb of killed fish
-        //etc.
+        ///vue du statut du jeu
         VBox gameStatusView = new VBox(35);
         Text killedFishCount = new Text("1");
         killedFishCount.setFont(Font.font(30));
         killedFishCount.setFill(Color.rgb(255, 255, 255));
-        //Initializing lives view
+
+        //Initialisation lives view
         HBox lives = new HBox(8);
         Image fishLife = new Image("Image/fish/00.png");
         ImageView fishLife1 = new ImageView(fishLife);
@@ -125,6 +125,8 @@ public class FishHunt extends Application {
         fishLife3.setFitWidth(30);
         lives.getChildren().addAll(fishLife1, fishLife2, fishLife3);
         lives.setAlignment(Pos.CENTER);
+
+        // Ajout du text de niveau
         Text levelCount = new Text("Level 1");
         levelCount.setFont(Font.font(75));
         levelCount.setFill(Color.rgb(255, 255, 255));
@@ -175,7 +177,7 @@ public class FishHunt extends Application {
             }
         });
 
-
+        // Initialization de laire dentree du highscore
         HBox highScoreSubmit = new HBox(4);
         highScoreSubmit.setAlignment(Pos.CENTER);
         Label label = new Label("Votre nom : ");
@@ -209,10 +211,7 @@ public class FishHunt extends Application {
         };
 
 
-        Button gameButton = new Button("Nouvelle Partie!");
-        Button scoreButton = new Button("Meilleurs scores");
 
-        //controller.setTimer(timer);
         //Initialisation de la scene HighScore
         Text titreHighScore = new Text("Meilleurs scores");
         HighScoreManager scoreManager = new HighScoreManager();
@@ -234,6 +233,10 @@ public class FishHunt extends Application {
         });
         highScoreSubmit.getChildren().addAll(label, nameInput, scoreText, submit);
         iniHighScore(highScoreVBox, titreHighScore, scoresView, highScoreSubmit, menuButton);
+
+        //Bouton de la vue principale
+        Button gameButton = new Button("Nouvelle Partie!");
+        Button scoreButton = new Button("Meilleurs scores");
         gameButton.setOnMouseClicked(mouseEvent -> {
             primaryStage.setScene(game);
             controller.setLock(false);
@@ -243,9 +246,8 @@ public class FishHunt extends Application {
             highScoreSubmit.setVisible(false);
             primaryStage.setScene(highScore);
         });
+
         //Initialisation de la scene MainMenu
-
-
         iniMainMenu(mainMenu, gameButton, scoreButton);
 
         controller.setStage(primaryStage);
